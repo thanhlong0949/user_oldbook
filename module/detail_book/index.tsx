@@ -1,0 +1,269 @@
+import React from "react";
+import "./index.scss";
+import Navbar from "@app/components/Layout/Navbar/Navbar";
+import {Button, Image, Select} from "antd";
+import {
+  CheckCircleFilled,
+  DollarCircleOutlined,
+  EyeOutlined,
+  GlobalOutlined,
+  HeartOutlined,
+  MoneyCollectOutlined,
+  ShareAltOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+import {useRouter} from "next/router";
+
+export function DetailBook(): JSX.Element {
+  const router = useRouter();
+  const keyPage = router.query.key;
+  const dataList = [
+    {
+      label: "Tiểu thuyết",
+      value: "1",
+    },
+    {
+      label: "Khoa học công nghệ",
+      value: "2",
+    },
+    {
+      label: "Kinh tế",
+      value: "a",
+    },
+    {
+      label: "Văn học nghệ thuật",
+      value: "3",
+    },
+    {
+      label: "Lịch sử",
+      value: "4",
+    },
+    {
+      label: "Truyện ",
+      value: "5",
+    },
+    {
+      label: "Tâm linh",
+      value: "6",
+    },
+    {
+      label: "Du Lịch",
+      value: "7",
+    },
+    {
+      label: "Tâm Lý",
+      value: "8",
+    },
+    {
+      label: "Giáo dục",
+      value: "9",
+    },
+    {
+      label: "Pháp Luật ",
+      value: "10",
+    },
+    {
+      label: "Âm Nhạc",
+      value: "11",
+    },
+    {
+      label: "Kiểm tra",
+      value: "12",
+    },
+    {
+      label: "Adult",
+      value: "13",
+    },
+    {
+      label: "Y tế, sức khỏe, thể dục",
+      value: "14",
+    },
+    {
+      label: "Khoa Học Viễn tưỡng",
+      value: "15",
+    },
+  ];
+  return (
+    <div className="detail-book-container-new">
+      <Navbar />
+      <div className="self-book">
+        <div className="main">
+          <div className="image-book">
+            <div className="icon">
+              <div className="group-icon">
+                <ShareAltOutlined style={{fontSize: "25px", width: "45px"}} />
+                <HeartOutlined style={{fontSize: "25px"}} />
+              </div>
+            </div>
+            <div className="image">
+              <div style={{display: "flex", justifyContent: "center"}}>
+                <Image
+                  width={200}
+                  height={260}
+                  preview={false}
+                  src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
+                />
+              </div>
+              <div className="horizontalLine" />
+              <div className="group-image-preview">
+                <div className="item-book">
+                  <Image
+                    width={50}
+                    height={70}
+                    preview={false}
+                    src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
+                  />
+                </div>
+                <div className="item-book">
+                  <Image
+                    width={50}
+                    height={70}
+                    preview={false}
+                    src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="detail-book">
+            <h2 style={{color: "#333"}}>
+              Youth Railway Recruitment Board Reasoning Chapterwise Solved
+              Papers
+            </h2>
+            {keyPage === "Bán" ? (
+              <div className="price">
+                <DollarCircleOutlined />
+                <span style={{marginLeft: "5px"}}>275$</span>
+              </div>
+            ) : (
+              <div>
+                <Button type="primary" icon={<MoneyCollectOutlined />}>
+                  Trao đổi
+                </Button>
+              </div>
+            )}
+
+            {keyPage === "Bán" ? (
+              <div className="button-sale">
+                <Button type="primary" icon={<MoneyCollectOutlined />}>
+                  Buy Now
+                </Button>
+                <Button style={{marginLeft: 7}} type="primary">
+                  Chat with Seller
+                </Button>
+              </div>
+            ) : (
+              <div />
+            )}
+
+            <div className="group-text">
+              <div className="row-text">
+                <div className="title">Name</div>
+                <div className="detail">Đắc Nhân Tâm</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Publishing Company</div>
+                <div className="detail">NaN</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Publication Date</div>
+                <div className="detail">10/02/2023</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Cover Type</div>
+                <div className="detail">Bìa cứng</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Condition</div>
+                <div className="detail">Còn mới</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Category</div>
+                <div className="detail">Sách tự sự</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Author</div>
+                <div className="detail">Dale Carnegie</div>
+              </div>
+              <div className="row-text">
+                <div className="title">Language</div>
+                <div className="detail"> Tiếng Anh</div>
+              </div>
+              {keyPage !== "Bán" && (
+                <div>
+                  <div className="row-text">
+                    <div className="title">Category Book</div>
+                    <div className="detail">
+                      <Select
+                        mode="multiple"
+                        allowClear
+                        style={{width: "50%"}}
+                        placeholder="Please select"
+                        onChange={() => console.log("select category")}
+                        options={dataList}
+                      />
+                    </div>
+                  </div>
+                  <div className="row-text">
+                    <div className="title">Name Book</div>
+                    <div className="detail">
+                      <Select
+                        mode="multiple"
+                        allowClear
+                        style={{width: "50%"}}
+                        placeholder="Please select"
+                        onChange={() => console.log("select category")}
+                        options={dataList}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="description">
+          <div className="left">
+            <h3>Description</h3>
+            <p>Dehli univercity MIL HILDI</p>
+            <p className="detail">
+              When you call, don't forget to mention that you found this ad on
+              Clankart.
+            </p>
+            <div className="row-info">
+              <span>Ad Id: 2701675580987505</span>
+              <span>Posted: Sun, 05 Feb 2023</span>
+              <div style={{display: "flex", alignItems: "center"}}>
+                <EyeOutlined style={{fontSize: 18, marginRight: "2px"}} />
+                <span>20 views</span>
+              </div>
+            </div>
+          </div>
+          <div className="right">
+            <h3>Contact</h3>
+            <div className="row1">
+              <div className="icon">
+                <UserOutlined style={{fontSize: 20}} />
+              </div>
+              <div className="detail-icon">
+                <h4>Anaya</h4>
+                <CheckCircleFilled
+                  style={{marginRight: 4, marginLeft: 4, color: "#26a541"}}
+                />
+                <h5>Verified</h5>
+              </div>
+            </div>
+            <div className="row1">
+              <div className="icon">
+                <GlobalOutlined style={{fontSize: 20}} />
+              </div>
+              <div className="detail-icon">
+                <h5>North West Delhi (110009), DELHI</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
