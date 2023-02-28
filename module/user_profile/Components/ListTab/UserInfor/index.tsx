@@ -4,7 +4,8 @@ import {InputGlobal} from "@app/components/InputGlobal";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
 import {ButtonGlobal} from "@app/components/ButtonGlobal";
 import {Formik} from "formik";
-import {Image, Radio, RadioChangeEvent} from "antd";
+import {Radio, RadioChangeEvent, Upload, InputNumber} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 export function UserInfor(): JSX.Element {
   const [isChangeInfor, setIsChangeInfor] = useState<boolean>(false);
@@ -24,6 +25,12 @@ export function UserInfor(): JSX.Element {
     setIsChangeInfor(!isChangeInfor);
   };
   const listItem = [
+    {
+      title: "Avatar",
+      placeholder: "Ảnh đại diện",
+      type: "avatar",
+      require,
+    },
     {
       title: "Họ",
       placeholder: "Nhập họ",
@@ -45,6 +52,7 @@ export function UserInfor(): JSX.Element {
       title: "Email",
       placeholder: "Nhập Email",
       type: "input",
+      require,
     },
     {
       title: "Giới tính",
@@ -64,6 +72,11 @@ export function UserInfor(): JSX.Element {
       placeholder: "DD/MM/YYYY",
       type: "input",
       require,
+    },
+    {
+      title: "Rate",
+      placeholder: "Rate",
+      type: "number",
     },
   ];
 
@@ -89,7 +102,7 @@ export function UserInfor(): JSX.Element {
             return (
               <div
                 className="formik-user-profile-container"
-                style={{width: "80%"}}
+                style={{width: "100%", padding:"0 24px"}}
               >
                 <div className="user-profile-container">
                   {listItem.map((item, index) => (
@@ -154,6 +167,70 @@ export function UserInfor(): JSX.Element {
                           <ErrorMessageGlobal name="username" />
                         </div>
                       )}
+                      {item.type === "avatar" && (
+                        <div className="form-item">
+                          <div className="title">
+                            <span>{item.title}:</span>
+                            {item.require && (
+                              <span
+                                style={{
+                                  color: "red",
+                                  marginLeft: 3,
+                                  fontSize: 15,
+                                }}
+                              >
+                                *
+                              </span>
+                            )}
+                          </div>
+                          <div className="item-detail">
+                            <Upload
+                              name="avatar"
+                              listType="picture-card"
+                              className="avatar-uploader"
+                              showUploadList={true}
+                              maxCount={1}
+                              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                              // beforeUpload={beforeUpload}
+                              // onChange={handleChange}
+                            >
+                              {/* {imageUrl ? (
+                                <img
+                                  src={imageUrl}
+                                  alt="avatar"
+                                  style={{width: "100%"}}
+                                />
+                              ) : (
+                                uploadButton
+                              )} */}
+                              <PlusOutlined/>
+                            </Upload>
+                          </div>
+                          <ErrorMessageGlobal name="username" />
+                        </div>
+                      )}
+                       {item.type === "number" && (
+                        <div className="form-item">
+                          <div className="title">
+                            <span>{item.title}:</span>
+                            {item.require && (
+                              <span
+                                style={{
+                                  color: "red",
+                                  marginLeft: 3,
+                                  fontSize: 15,
+                                }}
+                              >
+                                *
+                              </span>
+                            )}
+                          </div>
+                          <div className="item-detail">
+                          <InputNumber min={1} max={100000} defaultValue={1} />
+                          </div>
+                          <ErrorMessageGlobal name="username" />
+                        </div>
+                      )}
                     </div>
                   ))}
 
@@ -189,14 +266,14 @@ export function UserInfor(): JSX.Element {
             );
           }}
         </Formik>
-        <div style={{width: "20%", paddingLeft: 25}}>
+        {/* <div style={{width: "20%", paddingLeft: 25}}>
           <Image
             preview={false}
             width={200}
             src="https://st3.depositphotos.com/1767687/16607/v/450/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
           />
           <p style={{textAlign: "center", fontSize: 20}}>Rate: 53</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
