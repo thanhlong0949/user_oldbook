@@ -10,6 +10,11 @@ export function ManagerSaleOrder(): JSX.Element {
 
   const items: TabsProps["items"] = [
     {
+      key: "0",
+      label: `TẤT CẢ`,
+      children: <TableSale />,
+    },
+    {
       key: "1",
       label: `CHỜ XÁC NHẬN`,
       children: <TableSale />,
@@ -26,13 +31,23 @@ export function ManagerSaleOrder(): JSX.Element {
     },
     {
       key: "4",
-      label: `HOÀN THÀNH / ĐÃ HUỶ`,
+      label: `HOÀN THÀNH`,
+      children: <TableSale />,
+    },
+    {
+      key: "5",
+      label: `ĐÃ HUỶ`,
+      children: <TableSale />,
+    },
+    {
+      key: "6",
+      label: `HOÀN LẠI`,
       children: <TableSale />,
     },
   ];
   return (
     <div className="manager-sale-order">
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
     </div>
   );
 }

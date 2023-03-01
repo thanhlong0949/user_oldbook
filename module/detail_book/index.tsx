@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./index.scss";
 import Navbar from "@app/components/Layout/Navbar/Navbar";
 import {Button, Image, Select} from "antd";
@@ -17,6 +17,20 @@ import {useRouter} from "next/router";
 export function DetailBook(): JSX.Element {
   const router = useRouter();
   const keyPage = router.query.key;
+  const imagePreview = [
+    {
+      url: "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703",
+    },
+    {
+      url: "https://salt.tikicdn.com/cache/280x280/ts/product/05/3f/91/9e0157711ad88490a2497018aaf79bad.png.webp",
+    },
+    {
+      url: "https://salt.tikicdn.com/cache/280x280/ts/product/15/28/5d/d086661715806b0cd6053f2a40c5e1a4.jpg.webp"
+    }
+  ];
+  const [imageCurent, setImageCurent] = useState(
+    "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
+  );
   const dataList = [
     {
       label: "Tiểu thuyết",
@@ -83,6 +97,19 @@ export function DetailBook(): JSX.Element {
       value: "15",
     },
   ];
+
+  const handleListImage = () => {
+    return imagePreview.map((el, index) => (
+      <div className="item-book" onClick={() => setImageCurent(el.url)} key={index}>
+        <Image
+          width={50}
+          height={70}
+          preview={false}
+          src={el.url}
+        />
+      </div>
+    ));
+  };
   return (
     <div className="detail-book-container-new">
       <Navbar />
@@ -101,27 +128,12 @@ export function DetailBook(): JSX.Element {
                   width={200}
                   height={260}
                   preview={false}
-                  src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
+                  src={imageCurent}
                 />
               </div>
               <div className="horizontalLine" />
               <div className="group-image-preview">
-                <div className="item-book">
-                  <Image
-                    width={50}
-                    height={70}
-                    preview={false}
-                    src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
-                  />
-                </div>
-                <div className="item-book">
-                  <Image
-                    width={50}
-                    height={70}
-                    preview={false}
-                    src="https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
-                  />
-                </div>
+                {handleListImage()}
               </div>
             </div>
           </div>

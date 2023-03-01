@@ -1,5 +1,11 @@
 #__next {
   height: 100%;
+  overflow: hidden;
+  .require{
+    color:red;
+    margin-left: 3px;
+    font-size: 15px;
+  }
 }
 
 .wrapper {

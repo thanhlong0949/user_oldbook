@@ -3,6 +3,7 @@ import "./index.scss";
 import {ColumnsType} from "antd/es/table";
 import {Image, Table} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
+import ItemBook from "@app/components/ItemBook/ItemBook";
 
 interface DataType {
   key: string;
@@ -29,67 +30,13 @@ export function TableBuy(): JSX.Element {
   ];
   const columns: ColumnsType<DataType> = [
     {
-      title: "Tên sản phẩm",
+      title: "Sản phẩm",
       dataIndex: "name",
       key: "name",
-      width: 270,
-      align: "center",
-    },
-    {
-      title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
-      render: (_, dataIndex) => (
-        <div>
-          <Image
-            width={150}
-            height={150}
-            preview={false}
-            src={dataIndex.image}
-          />
-        </div>
-      ),
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Mô tả",
-      key: "description",
-      dataIndex: "description",
-      align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 250,
-    },
-    {
-      title: "Vận chuyển",
-      dataIndex: "transport",
-      key: "transport",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "SĐT",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Tổng cộng",
-      dataIndex: "total",
-      key: "total",
-      align: "center",
-      width: 200,
+      render: (_, record) => <ItemBook data={record} />
     },
   ];
-  const data = [
+  const data: any = [
     {
       name: "Áo khoác thời trang 007",
       image:
@@ -126,7 +73,6 @@ export function TableBuy(): JSX.Element {
       <FilterGroupGlobal listSearchText={listSearchText} />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1300}}
         columns={columns}
         dataSource={data}
       />

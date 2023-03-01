@@ -1,13 +1,14 @@
 import React from "react";
 import "./index.scss";
 import {ColumnsType} from "antd/es/table";
-import {Image, Table} from "antd";
-import {CheckCircleFilled, CloseCircleFilled} from "@ant-design/icons";
+import {Image, Table, Avatar} from "antd";
+import {CheckCircleFilled, CloseCircleFilled, UserOutlined} from "@ant-design/icons";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
+import ItemBook from "@app/components/ItemBook/ItemBook";
 
-interface DataType {
+export interface DataType {
   key: string;
   name: string;
   image: string;
@@ -24,65 +25,66 @@ export function TableSale(): JSX.Element {
   };
   const columns: ColumnsType<DataType> = [
     {
-      title: "Tên sản phẩm",
+      title: "Sản phẩm",
       dataIndex: "name",
       key: "name",
-      width: 250,
-      align: "center",
+      render: (_, record) => {
+        return <ItemBook data={record}/>
+      },
     },
-    {
-      title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
-      render: (_, dataIndex) => (
-        <div>
-          <Image
-            width={150}
-            height={150}
-            preview={false}
-            src={dataIndex.image}
-          />
-        </div>
-      ),
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Mô tả",
-      key: "description",
-      dataIndex: "description",
-      align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 200,
-    },
-    {
-      title: "Vận chuyển",
-      dataIndex: "transport",
-      key: "transport",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "SĐT",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-      align: "center",
-      width: 140,
-    },
-    {
-      title: "Địa chỉ",
-      dataIndex: "address",
-      key: "address",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Tổng cộng",
-      dataIndex: "total",
-      key: "total",
-      align: "center",
-      width: 200,
-    },
+    // {
+    //   title: "Ảnh",
+    //   dataIndex: "image",
+    //   key: "image",
+    //   render: (_, dataIndex) => (
+    //     <div>
+    //       <Image
+    //         width={150}
+    //         height={150}
+    //         preview={false}
+    //         src={dataIndex.image}
+    //       />
+    //     </div>
+    //   ),
+    //   align: "center",
+    //   width: 200,
+    // },
+    // {
+    //   title: "Mô tả",
+    //   key: "description",
+    //   dataIndex: "description",
+    //   align: "center",
+    //   render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
+    //   width: 200,
+    // },
+    // {
+    //   title: "Vận chuyển",
+    //   dataIndex: "transport",
+    //   key: "transport",
+    //   align: "center",
+    //   width: 200,
+    // },
+    // {
+    //   title: "SĐT",
+    //   dataIndex: "phoneNumber",
+    //   key: "phoneNumber",
+    //   align: "center",
+    //   width: 140,
+    // },
+    // {
+    //   title: "Địa chỉ",
+    //   dataIndex: "address",
+    //   key: "address",
+    //   align: "center",
+    //   width: 200,
+    // },
+    // {
+    //   title: "Tổng cộng",
+    //   dataIndex: "total",
+    //   key: "total",
+    //   align: "center",
+    //   width: 200,
+    // },
     {
       title: "Thao tác",
       dataIndex: "action",
@@ -108,7 +110,7 @@ export function TableSale(): JSX.Element {
       width: 100,
     },
   ];
-  const data = [
+  const data: any = [
     {
       name: "Áo khoác thời trang 007",
       image:
@@ -154,7 +156,7 @@ export function TableSale(): JSX.Element {
       <FilterGroupGlobal listSearchText={listSearchText} />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1300}}
+        // scroll={{x: 1300}}
         columns={columns}
         dataSource={data}
       />

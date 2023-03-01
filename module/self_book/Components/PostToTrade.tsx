@@ -46,7 +46,7 @@ export function PostToTrade(): JSX.Element {
   const [isDisable, setIsDisable] = useState<boolean>(true);
   const [isAdd, setIsAdd] = useState<boolean>(false);
   const [valueItemBook, setValueItemBook] = useState<string>("");
-  const [arrayBookName, setArrayBookName] = useState([]);
+  const [arrayBookName, setArrayBookName] = useState<any>([]);
   const handleAddBook = (): void => {
     console.log("handleAddBook");
     setIsDisable(false);
@@ -186,7 +186,8 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Add Category</p>
+          <span>Add Category</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Select
@@ -199,7 +200,7 @@ export function PostToTrade(): JSX.Element {
       </div>
       {/* <div className="item-formik"> */}
       {/*  <div className="title-text"> */}
-      {/*    <p>Book Details</p> */}
+      {/*    <span>Book Details</span> */}
       {/*  </div> */}
       {/*  <div className="action-item"> */}
       {/*    <Radio.Group onChange={onChange} value={value}> */}
@@ -214,7 +215,8 @@ export function PostToTrade(): JSX.Element {
       {/* </div> */}
       <div className="item-formik">
         <div className="title-text">
-          <p>ISBN</p>
+          <span>ISBN</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter 13 digit ISBN number" />
@@ -222,7 +224,8 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Book Type</p>
+          <span>Book Type</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Select
@@ -240,7 +243,8 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Book Condition</p>
+          <span>Book Condition</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Radio.Group name="radiogroup" defaultValue={1}>
@@ -251,7 +255,8 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Upload Photos</p>
+          <span>Upload Photos</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Upload
@@ -274,7 +279,8 @@ export function PostToTrade(): JSX.Element {
 
       <div className="item-formik">
         <div className="title-text">
-          <p>Initial Price</p>
+          <span>Initial Price</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter initial price" />
@@ -283,7 +289,8 @@ export function PostToTrade(): JSX.Element {
       <div>
         <div className="item-formik">
           <div className="title-text">
-            <p>Category book to trade</p>
+            <span>Category book to trade</span>
+            <span className="require">*</span>
           </div>
           <div className="action-item">
             <Select
@@ -298,7 +305,8 @@ export function PostToTrade(): JSX.Element {
         </div>
         <div className="item-formik">
           <div className="title-text">
-            <p>Name book to trade</p>
+            <span>Name book to trade</span>
+            <span className="require">*</span>
           </div>
           <div className="action-item">
             <Input
@@ -328,7 +336,7 @@ export function PostToTrade(): JSX.Element {
 
             <div className="row-name-book">
               {arrayBookName.length > 0 &&
-                arrayBookName.map((item, index) => (
+                arrayBookName.map((item: any, index: number) => (
                   <div key={index} className="item">
                     <span>{item}</span>
                     {item !== undefined && (
@@ -353,7 +361,7 @@ export function PostToTrade(): JSX.Element {
             style={{marginRight: "5px"}}
             type="primary"
           >
-            ok
+            OK
           </Button>
         </div>
       </div>

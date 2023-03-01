@@ -153,7 +153,8 @@ export function PostToSelf(): JSX.Element {
     <div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Add Category</p>
+          <span>Add Category</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Select
@@ -166,7 +167,8 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>ISBN</p>
+          <span>ISBN</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter 13 digit ISBN number" />
@@ -174,7 +176,8 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Book Type</p>
+          <span>Book Type</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Select
@@ -192,7 +195,8 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Book Condition</p>
+          <span>Book Condition</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Radio.Group name="radiogroup" defaultValue={1}>
@@ -203,7 +207,8 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Upload Photos</p>
+          <span>Upload Photos</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Upload
@@ -226,7 +231,8 @@ export function PostToSelf(): JSX.Element {
 
       <div className="item-formik">
         <div className="title-text">
-          <p>Initial Price</p>
+          <span>Initial Price</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter initial price" />
@@ -234,7 +240,8 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <p>Price</p>
+          <span>Price</span>
+          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter your price" />
@@ -250,7 +257,7 @@ export function PostToSelf(): JSX.Element {
           style={{marginRight: "5px"}}
           type="primary"
         >
-          ok
+          OK
         </Button>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
+import ItemBook from "@app/components/ItemBook/ItemBook";
 
 interface DataType {
   key: string;
@@ -38,47 +39,7 @@ export function HistoryPost(): JSX.Element {
       title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
-      width: 270,
-      align: "center",
-    },
-    {
-      title: "Ảnh",
-      dataIndex: "image",
-      key: "image",
-      render: (_, dataIndex) => (
-        <div>
-          <Image
-            width={150}
-            height={150}
-            preview={false}
-            src={dataIndex.image}
-          />
-        </div>
-      ),
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Mô tả",
-      key: "description",
-      dataIndex: "description",
-      align: "center",
-      render: (_, dataIndex) => <div>Phân loại: {dataIndex.description}</div>,
-      width: 250,
-    },
-    {
-      title: "Thời gian đăng",
-      dataIndex: "time_created",
-      key: "time_created",
-      align: "center",
-      width: 200,
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      align: "center",
-      width: 200,
+      render: (_, record) => <ItemBook data={record} />
     },
     {
       title: "Thao tác",
@@ -105,7 +66,7 @@ export function HistoryPost(): JSX.Element {
       width: 120,
     },
   ];
-  const data = [
+  const data: any = [
     {
       name: "Áo khoác thời trang 007",
       image:
@@ -140,7 +101,6 @@ export function HistoryPost(): JSX.Element {
       <FilterGroupGlobal listSearchText={listSearchText} />
       <Table
         style={{marginTop: 10}}
-        scroll={{x: 1300}}
         columns={columns}
         dataSource={data}
       />

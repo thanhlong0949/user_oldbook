@@ -47,9 +47,12 @@
             display: flex;
             justify-content: center;
             margin-top: 8px;
+            gap: 8px;
 
             .item-book {
               margin-right: 5px;
+              border: 1px solid #ccc;
+              cursor: pointer;
             }
           }
         }

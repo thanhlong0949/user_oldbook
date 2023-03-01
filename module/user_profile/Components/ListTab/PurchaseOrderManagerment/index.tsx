@@ -10,6 +10,11 @@ export function PurchaseOrderManagerment(): JSX.Element {
 
   const items: TabsProps["items"] = [
     {
+      key: "0",
+      label: `TẤT CẢ`,
+      children: <TableBuy />,
+    },
+    {
       key: "1",
       label: `CHỜ XÁC NHẬN`,
       children: <TableBuy />,
@@ -26,13 +31,23 @@ export function PurchaseOrderManagerment(): JSX.Element {
     },
     {
       key: "4",
-      label: `HOÀN THÀNH / ĐÃ HUỶ`,
+      label: `HOÀN THÀNH`,
+      children: <TableBuy />,
+    },
+    {
+      key: "5",
+      label: `ĐÃ HUỶ`,
+      children: <TableBuy />,
+    },
+    {
+      key: "6",
+      label: `HOÀN LẠI`,
       children: <TableBuy />,
     },
   ];
   return (
     <div>
-      <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+      <Tabs defaultActiveKey="0" items={items} onChange={onChange} />
     </div>
   );
 }
