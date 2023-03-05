@@ -70,6 +70,12 @@ const routes: IRoute[] = [
     isSidebar: true,
   },
   {
+    path: "/chat-seller",
+    name: "chat seller",
+    isSidebar: false,
+    isLanding: true,
+  },
+  {
     path: "/blogs",
     name: "Blogs",
     isSidebar: true,

@@ -152,6 +152,9 @@ export function DetailBook(): JSX.Element {
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
                   Trao đổi
                 </Button>
+                <Button style={{marginLeft: 7}} type="primary">
+                  Chat with Seller
+                </Button>
               </div>
             )}
 
