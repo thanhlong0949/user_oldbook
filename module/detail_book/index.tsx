@@ -152,7 +152,7 @@ export function DetailBook(): JSX.Element {
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
                   Trao đổi
                 </Button>
-                <Button style={{marginLeft: 7}} type="primary">
+                <Button style={{marginLeft: 7}} type="primary" onClick={() => router.push("/chat-seller")}>
                   Chat with Seller
                 </Button>
               </div>
@@ -163,7 +163,7 @@ export function DetailBook(): JSX.Element {
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
                   Buy Now
                 </Button>
-                <Button style={{marginLeft: 7}} type="primary">
+                <Button style={{marginLeft: 7}} type="primary" onClick={() => router.push("/chat-seller")} >
                   Chat with Seller
                 </Button>
               </div>
