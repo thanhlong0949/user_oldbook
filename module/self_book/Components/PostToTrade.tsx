@@ -203,7 +203,7 @@ export function PostToTrade(): JSX.Element {
           <span>ISBN</span>
         </div>
         <div className="action-item">
-          <Input placeholder="Enter 13 digit ISBN number" />
+          <Input placeholder="Nhập mã ISBN" />
         </div>
       </div>
       <div className="item-formik">
@@ -267,7 +267,7 @@ export function PostToTrade(): JSX.Element {
           <span className="require">*</span>
         </div>
         <div className="action-item">
-          <Input placeholder="Enter initial price" />
+          <Input placeholder="Nhập giá gốc" />
         </div>
       </div>
       <div>
@@ -281,7 +281,7 @@ export function PostToTrade(): JSX.Element {
               mode="multiple"
               allowClear
               style={{width: "100%"}}
-              placeholder="Please select"
+              placeholder="Chọn"
               onChange={handleChange}
               options={dataList}
             />
@@ -300,7 +300,7 @@ export function PostToTrade(): JSX.Element {
               }}
               value={valueItemBook}
               disabled={isDisable}
-              placeholder="Enter name book to trade"
+              placeholder="Nhập tên sách trao đổi"
             />
             {!isAdd ? (
               <PlusCircleOutlined

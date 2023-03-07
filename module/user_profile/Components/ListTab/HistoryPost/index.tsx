@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import "./index.scss";
 import {ColumnsType} from "antd/es/table";
-import {Image, Switch, Table} from "antd";
+import {Image, Modal, Switch, Table} from "antd";
 import {
   CheckCircleFilled,
   CloseCircleFilled,
@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import ItemBook from "@app/components/ItemBook/ItemBook";
+import {ModalEdit} from "@app/module/user_profile/Components/ListTab/HistoryPost/Components/ModalEdit";
 
 interface DataType {
   key: string;
@@ -22,8 +23,21 @@ interface DataType {
 }
 
 export function HistoryPost(): JSX.Element {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
   const listSearchText = [
     {
@@ -57,7 +71,7 @@ export function HistoryPost(): JSX.Element {
           <div>
             <Switch defaultChecked onChange={onChange} />
           </div>
-          <div style={{marginLeft: 8}}>
+          <div onClick={showModal} style={{marginLeft: 8}}>
             <EditOutlined style={{fontSize: 22, color: "blue"}} />
           </div>
         </div>
@@ -100,6 +114,14 @@ export function HistoryPost(): JSX.Element {
     <div className="item-trade-buy-container">
       <FilterGroupGlobal listSearchText={listSearchText} />
       <Table style={{marginTop: 10}} columns={columns} dataSource={data} />
+      <Modal
+        title="Chỉnh sửa bài đăng"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <ModalEdit />
+      </Modal>
     </div>
   );
 }

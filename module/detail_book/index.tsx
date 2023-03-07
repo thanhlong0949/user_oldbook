@@ -162,7 +162,7 @@ export function DetailBook(): JSX.Element {
                   type="primary"
                   onClick={() => router.push("/chat-seller")}
                 >
-                  Chat with Seller
+                  Chat với người bán
                 </Button>
               </div>
             )}
@@ -170,14 +170,14 @@ export function DetailBook(): JSX.Element {
             {keyPage === "Bán" ? (
               <div className="button-sale">
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
-                  Buy Now
+                  Mua ngay
                 </Button>
                 <Button
                   style={{marginLeft: 7}}
                   type="primary"
                   onClick={() => router.push("/chat-seller")}
                 >
-                  Chat with Seller
+                  Chat với người bán
                 </Button>
               </div>
             ) : (
@@ -186,41 +186,41 @@ export function DetailBook(): JSX.Element {
 
             <div className="group-text">
               <div className="row-text">
-                <div className="title">Name</div>
+                <div className="title">Tên</div>
                 <div className="detail">Đắc Nhân Tâm</div>
               </div>
               <div className="row-text">
-                <div className="title">Publishing Company</div>
+                <div className="title">Người đăng</div>
                 <div className="detail">NaN</div>
               </div>
               <div className="row-text">
-                <div className="title">Publication Date</div>
+                <div className="title">Ngày đăng</div>
                 <div className="detail">10/02/2023</div>
               </div>
               <div className="row-text">
-                <div className="title">Cover Type</div>
+                <div className="title">Thể loại sách</div>
                 <div className="detail">Bìa cứng</div>
               </div>
               <div className="row-text">
-                <div className="title">Condition</div>
+                <div className="title">Tình trạng</div>
                 <div className="detail">Còn mới</div>
               </div>
               <div className="row-text">
-                <div className="title">Category</div>
+                <div className="title">Thể loại</div>
                 <div className="detail">Sách tự sự</div>
               </div>
               <div className="row-text">
-                <div className="title">Author</div>
+                <div className="title">Tác giả</div>
                 <div className="detail">Dale Carnegie</div>
               </div>
               <div className="row-text">
-                <div className="title">Language</div>
+                <div className="title">Ngôn ngữ</div>
                 <div className="detail"> Tiếng Anh</div>
               </div>
               {keyPage !== "Bán" && (
                 <div>
                   <div className="row-text">
-                    <div className="title">Category Book</div>
+                    <div className="title">Thể loại sách</div>
                     <div className="detail">
                       <Select
                         mode="multiple"
@@ -233,7 +233,7 @@ export function DetailBook(): JSX.Element {
                     </div>
                   </div>
                   <div className="row-text">
-                    <div className="title">Name Book</div>
+                    <div className="title">Tên sách</div>
                     <div className="detail">
                       <Select
                         mode="multiple"
@@ -252,23 +252,23 @@ export function DetailBook(): JSX.Element {
         </div>
         <div className="description">
           <div className="left">
-            <h3>Description</h3>
+            <h3>Mô tả</h3>
             <p>Dehli univercity MIL HILDI</p>
             <p className="detail">
               When you call, don't forget to mention that you found this ad on
               Clankart.
             </p>
             <div className="row-info">
-              <span>Ad Id: 2701675580987505</span>
-              <span>Posted: Sun, 05 Feb 2023</span>
+              <span>Id: 2701675580987505</span>
+              <span>Ngày đăng: Sun, 05 Feb 2023</span>
               <div style={{display: "flex", alignItems: "center"}}>
                 <EyeOutlined style={{fontSize: 18, marginRight: "2px"}} />
-                <span>20 views</span>
+                <span>20 lượt xem</span>
               </div>
             </div>
           </div>
           <div className="right">
-            <h3>Contact</h3>
+            <h3>Liên hệ</h3>
             <div className="row1">
               <div className="icon">
                 <UserOutlined style={{fontSize: 20}} />
@@ -278,7 +278,7 @@ export function DetailBook(): JSX.Element {
                 <CheckCircleFilled
                   style={{marginRight: 4, marginLeft: 4, color: "#26a541"}}
                 />
-                <h5>Verified</h5>
+                <h5>Xác thực</h5>
               </div>
             </div>
             <div className="row1">

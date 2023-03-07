@@ -164,7 +164,7 @@ export function PostToSelf(): JSX.Element {
           <span>ISBN</span>
         </div>
         <div className="action-item">
-          <Input placeholder="Enter 13 digit ISBN number" />
+          <Input placeholder="Nhập mã ISBN" />
         </div>
       </div>
       <div className="item-formik">
@@ -228,7 +228,7 @@ export function PostToSelf(): JSX.Element {
           <span className="require">*</span>
         </div>
         <div className="action-item">
-          <Input placeholder="Enter initial price" />
+          <Input placeholder="Nhập giá gốc" />
         </div>
       </div>
       <div className="item-formik">
@@ -237,7 +237,7 @@ export function PostToSelf(): JSX.Element {
           <span className="require">*</span>
         </div>
         <div className="action-item">
-          <Input placeholder="Enter your price" />
+          <Input placeholder="Nhập giá" />
         </div>
       </div>
 
