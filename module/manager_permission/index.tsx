@@ -4,6 +4,7 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import {DollarCircleOutlined} from "@ant-design/icons";
 import {Icon} from "@app/components/Icon";
+import {BreakCrumGlobal} from "@app/components/BreakCrumGlobal";
 
 export function ManagerPermission(): JSX.Element {
   const router = useRouter();
@@ -99,6 +100,7 @@ export function ManagerPermission(): JSX.Element {
       {/*  dataFilter={dataFilter} */}
       {/*  setDataFilter={setDataFilter} */}
       {/* /> */}
+      <BreakCrumGlobal listBreakcrum={["Trang chủ", "Tất cả sách"]} />
       <div className="home-list-book">
         {listBook.map((item, index) => (
           <div
@@ -109,13 +111,6 @@ export function ManagerPermission(): JSX.Element {
             <Image preview={false} width={160} height={160} src={item.uri} />
             <div className="text-title">{item.title}</div>
             <div className="author">Tác giả:{item.author}</div>
-            {/* <div className="vote"> */}
-            {/*  <StarFilled style={{color: "yellow", padding: "0 2px"}} /> */}
-            {/*  <StarFilled style={{color: "yellow", padding: "0 2px"}} /> */}
-            {/*  <StarFilled style={{color: "yellow", padding: "0 2px"}} /> */}
-            {/*  <StarFilled style={{color: "yellow", padding: "0 2px"}} /> */}
-            {/*  <StarFilled style={{color: "yellow", padding: "0 2px"}} /> */}
-            {/* </div> */}
             <div className="row-end">
               <div>
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -128,7 +123,14 @@ export function ManagerPermission(): JSX.Element {
                 </div>
               </div>
               <div>
-                <Button>{item.status}</Button>
+                <Button
+                  style={{
+                    borderColor: item.status === "Bán" ? "red" : "blue",
+                    color: item.status === "Bán" ? "red" : "blue",
+                  }}
+                >
+                  {item.status}
+                </Button>
               </div>
             </div>
           </div>

@@ -105,12 +105,6 @@ export function PostToSelf(): JSX.Element {
     },
   ];
 
-  const postToSell = (): void => {
-    setSellOrderTrade("sell");
-  };
-  const postToTrade = (): void => {
-    setSellOrderTrade("trade");
-  };
   const handleCancel = (): void => {
     setSellOrderTrade("");
   };
@@ -138,7 +132,7 @@ export function PostToSelf(): JSX.Element {
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{marginTop: 8}}>Upload</div>
+      <div style={{marginTop: 8}}>Tải ảnh lên</div>
     </div>
   );
   const onChange = (e: RadioChangeEvent) => {
@@ -153,7 +147,7 @@ export function PostToSelf(): JSX.Element {
     <div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Add Category</span>
+          <span>Thể loại sách</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -168,7 +162,6 @@ export function PostToSelf(): JSX.Element {
       <div className="item-formik">
         <div className="title-text">
           <span>ISBN</span>
-          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter 13 digit ISBN number" />
@@ -176,7 +169,7 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Book Type</span>
+          <span>Tên sách</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -195,7 +188,7 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Book Condition</span>
+          <span>Tình trạng sách</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -207,7 +200,7 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Upload Photos</span>
+          <span>Tải ảnh lên</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -231,7 +224,7 @@ export function PostToSelf(): JSX.Element {
 
       <div className="item-formik">
         <div className="title-text">
-          <span>Initial Price</span>
+          <span>Gía gốc</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -240,7 +233,7 @@ export function PostToSelf(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Price</span>
+          <span>Gía bán</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -250,7 +243,7 @@ export function PostToSelf(): JSX.Element {
 
       <div style={{display: "flex", justifyContent: "flex-end"}}>
         <Button onClick={handleCancel} style={{marginRight: "5px"}}>
-          Cancel
+          Hủy
         </Button>
         <Button
           onClick={handleSubmit}

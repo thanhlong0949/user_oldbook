@@ -2,7 +2,11 @@ import React from "react";
 import "./index.scss";
 import {ColumnsType} from "antd/es/table";
 import {Image, Table, Avatar} from "antd";
-import {CheckCircleFilled, CloseCircleFilled, UserOutlined} from "@ant-design/icons";
+import {
+  CheckCircleFilled,
+  CloseCircleFilled,
+  UserOutlined,
+} from "@ant-design/icons";
 import FilterGroupGlobal, {
   ListSelectOptionType,
 } from "@app/components/FilterGroupGlobal";
@@ -29,7 +33,7 @@ export function TableSale(): JSX.Element {
       dataIndex: "name",
       key: "name",
       render: (_, record) => {
-        return <ItemBook data={record}/>
+        return <ItemBook data={record} />;
       },
     },
     // {

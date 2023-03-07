@@ -19,11 +19,9 @@ function LoadingLayout({children}: LoadingLayoutProps): JSX.Element {
     //   url !== router.asPath && setLoading(true);
     // const handleComplete = (url: string): void | boolean =>
     //   url === router.asPath && setLoading(false);
-
     // router.events.on("routeChangeStart", handleStart);
     // router.events.on("routeChangeComplete", handleComplete);
     // router.events.on("routeChangeError", handleComplete);
-
     // return () => {
     //   router.events.off("routeChangeStart", handleStart);
     //   router.events.off("routeChangeComplete", handleComplete);

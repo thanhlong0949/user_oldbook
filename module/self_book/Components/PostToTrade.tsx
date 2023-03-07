@@ -186,7 +186,7 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Add Category</span>
+          <span>Thể loại</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -198,25 +198,9 @@ export function PostToTrade(): JSX.Element {
           />
         </div>
       </div>
-      {/* <div className="item-formik"> */}
-      {/*  <div className="title-text"> */}
-      {/*    <span>Book Details</span> */}
-      {/*  </div> */}
-      {/*  <div className="action-item"> */}
-      {/*    <Radio.Group onChange={onChange} value={value}> */}
-      {/*      <Space direction="vertical"> */}
-      {/*        <Radio value={1}>Enter book details manually</Radio> */}
-      {/*        <Radio value={2}> */}
-      {/*          Automatically; by just typing the ISBN number */}
-      {/*        </Radio> */}
-      {/*      </Space> */}
-      {/*    </Radio.Group> */}
-      {/*  </div> */}
-      {/* </div> */}
       <div className="item-formik">
         <div className="title-text">
           <span>ISBN</span>
-          <span className="require">*</span>
         </div>
         <div className="action-item">
           <Input placeholder="Enter 13 digit ISBN number" />
@@ -224,7 +208,7 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Book Type</span>
+          <span>Tên sách</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -243,7 +227,7 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Book Condition</span>
+          <span>Tình trạng sách</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -255,7 +239,7 @@ export function PostToTrade(): JSX.Element {
       </div>
       <div className="item-formik">
         <div className="title-text">
-          <span>Upload Photos</span>
+          <span>Tải ảnh lên</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -279,7 +263,7 @@ export function PostToTrade(): JSX.Element {
 
       <div className="item-formik">
         <div className="title-text">
-          <span>Initial Price</span>
+          <span>Gía gốc</span>
           <span className="require">*</span>
         </div>
         <div className="action-item">
@@ -289,7 +273,7 @@ export function PostToTrade(): JSX.Element {
       <div>
         <div className="item-formik">
           <div className="title-text">
-            <span>Category book to trade</span>
+            <span>Thể loại muốn trao đổi</span>
             <span className="require">*</span>
           </div>
           <div className="action-item">
@@ -305,7 +289,7 @@ export function PostToTrade(): JSX.Element {
         </div>
         <div className="item-formik">
           <div className="title-text">
-            <span>Name book to trade</span>
+            <span>Tên sách muốn trao đổi</span>
             <span className="require">*</span>
           </div>
           <div className="action-item">
@@ -354,7 +338,7 @@ export function PostToTrade(): JSX.Element {
       <div style={{display: "flex", justifyContent: "flex-end"}}>
         <div>
           <Button onClick={handleCancel} style={{marginRight: "5px"}}>
-            Cancel
+            Hủy
           </Button>
           <Button
             onClick={handleSubmit}

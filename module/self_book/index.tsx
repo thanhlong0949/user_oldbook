@@ -60,7 +60,7 @@ export function SelfBook(): JSX.Element {
       <Navbar />
       <div className="self-book">
         <div className="title-text">
-          <p style={{fontSize: 20, fontWeight: "500"}}>Book Details</p>
+          <p style={{fontSize: 20, fontWeight: "500"}}>Chi tiết sách</p>
         </div>
         <Tabs defaultActiveKey="1" items={items} onChange={onChangeTab} />
       </div>

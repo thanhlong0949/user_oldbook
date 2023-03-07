@@ -39,7 +39,7 @@ export function HistoryPost(): JSX.Element {
       title: "Tên sản phẩm",
       dataIndex: "name",
       key: "name",
-      render: (_, record) => <ItemBook data={record} />
+      render: (_, record) => <ItemBook data={record} />,
     },
     {
       title: "Thao tác",
@@ -99,11 +99,7 @@ export function HistoryPost(): JSX.Element {
   return (
     <div className="item-trade-buy-container">
       <FilterGroupGlobal listSearchText={listSearchText} />
-      <Table
-        style={{marginTop: 10}}
-        columns={columns}
-        dataSource={data}
-      />
+      <Table style={{marginTop: 10}} columns={columns} dataSource={data} />
     </div>
   );
 }

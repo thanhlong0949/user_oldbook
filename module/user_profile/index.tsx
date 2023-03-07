@@ -8,6 +8,7 @@ import {
   DollarCircleOutlined,
   GlobalOutlined,
   SelectOutlined,
+  SlidersOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {UserInfor} from "@app/module/user_profile/Components/ListTab/UserInfor";
@@ -15,7 +16,7 @@ import {Address} from "@app/module/user_profile/Components/ListTab/Address";
 import {ManagerSaleOrder} from "@app/module/user_profile/Components/ListTab/ManagerSaleOrder";
 import {PurchaseOrderManagerment} from "@app/module/user_profile/Components/ListTab/PurchaseOrderManagerment";
 import {HistoryPost} from "@app/module/user_profile/Components/ListTab/HistoryPost";
-import {Image} from "antd";
+import {Complaint} from "@app/module/user_profile/Components/ListTab/Complaint";
 
 export function UserProfile(): JSX.Element {
   const [keyTab, setKeyTab] = useState<string>("UserInfor");
@@ -36,6 +37,9 @@ export function UserProfile(): JSX.Element {
         break;
       case "PurchaseOrderManagerment":
         element = <PurchaseOrderManagerment />;
+        break;
+      case "Complaint":
+        element = <Complaint />;
         break;
       default:
         element = <UserInfor />;
@@ -67,6 +71,11 @@ export function UserProfile(): JSX.Element {
       tabName: "Lịch sử bài đăng",
       key: "HistoryPost",
       icon: <CloudUploadOutlined />,
+    },
+    {
+      tabName: "Quản lí khiếu nại",
+      key: "Complaint",
+      icon: <SlidersOutlined />,
     },
   ];
 

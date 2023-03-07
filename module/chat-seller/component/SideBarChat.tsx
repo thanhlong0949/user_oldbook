@@ -59,18 +59,17 @@ export default function SideBarChat() {
   ];
 
   useEffect(() => {
-    router.push(`/chat-seller?seller=${data[0].name}`)
-  },[])
-  
+    router.push(`/chat-seller?seller=${data[0].name}`);
+  }, []);
 
   const renderUser = () => {
     return data.map((el, index) => (
       <div
-        className={classNames("user",{active: active === index})}
+        className={classNames("user", {active: active === index})}
         key={index}
         onClick={() => {
-            setActive(index);
-            router.push(`/chat-seller?seller=${el.name}`)
+          setActive(index);
+          router.push(`/chat-seller?seller=${el.name}`);
         }}
       >
         <div className="user-left">

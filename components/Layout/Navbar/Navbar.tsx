@@ -8,7 +8,7 @@ import Config from "@app/config";
 export default function Navbar(): JSX.Element {
   const router = useRouter();
   const avatar =
-    "https://thietkekhainguyen.com/wp-content/uploads/2018/10/sach-anh-du-lich7-788x445.jpg";
+    "https://anhdep.tv/attachments/0aac3787f518616d28029ce80066622a-jpeg.23908/";
   const toSelfBook = (): void => {
     router.push("/self_book");
   };
@@ -28,12 +28,13 @@ export default function Navbar(): JSX.Element {
     <div className="navbar" style={{height: Config.HEIGHT_NAVBAR}}>
       <div onClick={goToHomePage} className="logo">
         <Image
-          style={{borderRadius: 50}}
-          width={40}
+          // style={{borderRadius: 10}}
+          width={80}
           height={40}
           preview={false}
           src={avatar}
         />
+        {/* <img src="" alt="" /> */}
       </div>
       <div className="search-navbar">
         <Input

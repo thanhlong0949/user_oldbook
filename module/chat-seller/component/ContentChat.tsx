@@ -6,14 +6,14 @@ import {
   PlusCircleFilled,
   SendOutlined,
 } from "@ant-design/icons";
-import React,{ useEffect, useState} from "react";
-import { useRouter } from "next/router";
+import React, {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 import "./index.scss";
 import {Input} from "antd";
 
 export default function ContentChat() {
-    const [userName, setUserName] = useState<string| string[] | undefined>();
-    const router = useRouter();
+  const [userName, setUserName] = useState<string | string[] | undefined>();
+  const router = useRouter();
   const data = [
     {
       type: 0,
@@ -44,17 +44,17 @@ export default function ContentChat() {
       mess: "Tôi đang muốn tìm hiểu về lập trình web",
     },
     {
-        type: 0,
-        mess: "Vâng, đối với web chúng tôi các sách về cách xây dựng 1 trang web từ a-z.",
-      },
-      {
-        type: 1,
-        mess: "Vâng cảm ơn bạn.",
-      },
-      {
-        type: 1,
-        mess: "bạn có thể cho tôi biết giá của cuốn sách không?",
-      },
+      type: 0,
+      mess: "Vâng, đối với web chúng tôi các sách về cách xây dựng 1 trang web từ a-z.",
+    },
+    {
+      type: 1,
+      mess: "Vâng cảm ơn bạn.",
+    },
+    {
+      type: 1,
+      mess: "bạn có thể cho tôi biết giá của cuốn sách không?",
+    },
   ];
 
   const handleRendermess = () => {
@@ -81,7 +81,7 @@ export default function ContentChat() {
   useEffect(() => {
     const {seller} = router.query;
     setUserName(seller);
-  },[router.query])
+  }, [router.query]);
 
   return (
     <div className="content-chat">

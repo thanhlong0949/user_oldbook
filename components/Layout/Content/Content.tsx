@@ -16,7 +16,9 @@ export default function Content({children}: ContentProps): JSX.Element {
     if (paths) {
       temp.push(paths.name);
       if (paths?.children) {
-        temp.push(paths.children.find((e) => e.key === router.query.type)?.name);
+        temp.push(
+          paths.children.find((e) => e.key === router.query.type)?.name
+        );
       }
     }
     setPath(temp);

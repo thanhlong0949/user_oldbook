@@ -1,7 +1,6 @@
 {
   "IcoMoonType": "selection",
   "icons": [
-
     {
       "icon": {
         "paths": [
@@ -79,9 +78,7 @@
         ],
         "isMulticolor": false,
         "isMulticolor2": false,
-        "tags": [
-          "Vector (9)"
-        ],
+        "tags": ["Vector (9)"],
         "grid": 0
       },
       "attrs": [
@@ -118,9 +115,7 @@
         ],
         "isMulticolor": false,
         "isMulticolor2": false,
-        "tags": [
-          "Shape"
-        ],
+        "tags": ["Shape"],
         "grid": 0
       },
       "attrs": [
@@ -161,9 +156,7 @@
         ],
         "isMulticolor": true,
         "isMulticolor2": false,
-        "tags": [
-          "Group 7326"
-        ],
+        "tags": ["Group 7326"],
         "grid": 0
       },
       "attrs": [
@@ -180,10 +173,7 @@
         "name": "Bell_Noti",
         "prevSize": 32,
         "code": 59882,
-        "codes": [
-          59882,
-          59883
-        ]
+        "codes": [59882, 59883]
       },
       "setIdx": 6,
       "setId": 13,

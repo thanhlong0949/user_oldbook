@@ -5,6 +5,9 @@ import {Image, Table} from "antd";
 import FilterGroupGlobal from "@app/components/FilterGroupGlobal";
 import ItemBook from "@app/components/ItemBook/ItemBook";
 
+interface ITableBuy {
+  keyPage?: string;
+}
 interface DataType {
   key: string;
   name: string;
@@ -16,7 +19,8 @@ interface DataType {
   total: string;
 }
 
-export function TableBuy(): JSX.Element {
+export function TableBuy(props: ITableBuy): JSX.Element {
+  const {keyPage} = props;
   const handleSearch = (valueSearch: string): void => {
     console.log("Ssss");
   };
@@ -33,7 +37,7 @@ export function TableBuy(): JSX.Element {
       title: "Sản phẩm",
       dataIndex: "name",
       key: "name",
-      render: (_, record) => <ItemBook data={record} />
+      render: (_, record) => <ItemBook keyPage={keyPage} data={record} />,
     },
   ];
   const data: any = [
@@ -71,11 +75,7 @@ export function TableBuy(): JSX.Element {
   return (
     <div className="item-trade-buy-container">
       <FilterGroupGlobal listSearchText={listSearchText} />
-      <Table
-        style={{marginTop: 10}}
-        columns={columns}
-        dataSource={data}
-      />
+      <Table style={{marginTop: 10}} columns={columns} dataSource={data} />
     </div>
   );
 }

@@ -7,42 +7,43 @@ export function PurchaseOrderManagerment(): JSX.Element {
   const onChange = (key: string) => {
     console.log(key);
   };
+  const key = "buy";
 
   const items: TabsProps["items"] = [
     {
       key: "0",
       label: `TẤT CẢ`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "1",
       label: `CHỜ XÁC NHẬN`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "2",
       label: `ĐANG XỬ LÍ`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "3",
       label: `ĐANG GIAO`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "4",
       label: `HOÀN THÀNH`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "5",
       label: `ĐÃ HUỶ`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
     {
       key: "6",
       label: `HOÀN LẠI`,
-      children: <TableBuy />,
+      children: <TableBuy keyPage={key} />,
     },
   ];
   return (

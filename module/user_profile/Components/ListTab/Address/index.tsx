@@ -20,26 +20,6 @@ export function Address(): JSX.Element {
   };
   const handleSave = (): void => {};
 
-  const contactList = [
-    {
-      title: "Họ",
-      placeholder: "Nhập họ",
-      type: "input",
-      require,
-    },
-    {
-      title: "Tên",
-      placeholder: "Nhập tên",
-      type: "input",
-      require,
-    },
-    {
-      title: "Số điện thoại",
-      placeholder: "Nhập số điện thoại",
-      type: "input",
-    },
-  ];
-
   const addressList = [
     {
       title: "Tỉnh",

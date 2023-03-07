@@ -24,7 +24,7 @@ function getItem(
   } as MenuItem;
 }
 
- export const dataList = [
+export const dataList = [
   {
     name: "Kinh tế",
     key: "1",
@@ -240,10 +240,8 @@ export default function Sidebar(): JSX.Element {
     return itemsTmp;
   };
   const onClick: MenuProps["onClick"] = (e) => {
-    router.push(`/?kind=${e?.keyPath[1]}&type=${e.keyPath[0]}`)
+    router.push(`/?kind=${e?.keyPath[1]}&type=${e.keyPath[0]}`);
     console.log("click ", e);
-    
-
   };
   return (
     <div className="sidebar-container">

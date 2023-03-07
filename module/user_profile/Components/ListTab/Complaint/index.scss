@@ -1,6 +1,4 @@
-.address-tab-container {
-  padding: 0 20px;
-
+.complaint-container {
   .main {
     display: flex;
     .contact {
@@ -45,11 +43,5 @@
         }
       }
     }
-  }
-  .lineHorizoltal {
-    height: 1px;
-    background-color: black;
-    margin-top: 30px;
-    margin-bottom: 10px;
   }
 }

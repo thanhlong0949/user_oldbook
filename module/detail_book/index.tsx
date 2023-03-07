@@ -13,6 +13,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import {useRouter} from "next/router";
+import {BreakCrumGlobal} from "@app/components/BreakCrumGlobal";
 
 export function DetailBook(): JSX.Element {
   const router = useRouter();
@@ -25,8 +26,8 @@ export function DetailBook(): JSX.Element {
       url: "https://salt.tikicdn.com/cache/280x280/ts/product/05/3f/91/9e0157711ad88490a2497018aaf79bad.png.webp",
     },
     {
-      url: "https://salt.tikicdn.com/cache/280x280/ts/product/15/28/5d/d086661715806b0cd6053f2a40c5e1a4.jpg.webp"
-    }
+      url: "https://salt.tikicdn.com/cache/280x280/ts/product/15/28/5d/d086661715806b0cd6053f2a40c5e1a4.jpg.webp",
+    },
   ];
   const [imageCurent, setImageCurent] = useState(
     "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
@@ -100,13 +101,12 @@ export function DetailBook(): JSX.Element {
 
   const handleListImage = () => {
     return imagePreview.map((el, index) => (
-      <div className="item-book" onClick={() => setImageCurent(el.url)} key={index}>
-        <Image
-          width={50}
-          height={70}
-          preview={false}
-          src={el.url}
-        />
+      <div
+        className="item-book"
+        onClick={() => setImageCurent(el.url)}
+        key={index}
+      >
+        <Image width={50} height={70} preview={false} src={el.url} />
       </div>
     ));
   };
@@ -114,6 +114,13 @@ export function DetailBook(): JSX.Element {
     <div className="detail-book-container-new">
       <Navbar />
       <div className="self-book">
+        <BreakCrumGlobal
+          listBreakcrum={
+            keyPage === "Bán"
+              ? ["Trang chủ", "Tất cả sách", "Bán sách"]
+              : ["Trang chủ", "Tất cả sách", "Trao đổi"]
+          }
+        />
         <div className="main">
           <div className="image-book">
             <div className="icon">
@@ -132,9 +139,7 @@ export function DetailBook(): JSX.Element {
                 />
               </div>
               <div className="horizontalLine" />
-              <div className="group-image-preview">
-                {handleListImage()}
-              </div>
+              <div className="group-image-preview">{handleListImage()}</div>
             </div>
           </div>
           <div className="detail-book">
@@ -152,7 +157,11 @@ export function DetailBook(): JSX.Element {
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
                   Trao đổi
                 </Button>
-                <Button style={{marginLeft: 7}} type="primary" onClick={() => router.push("/chat-seller")}>
+                <Button
+                  style={{marginLeft: 7}}
+                  type="primary"
+                  onClick={() => router.push("/chat-seller")}
+                >
                   Chat with Seller
                 </Button>
               </div>
@@ -163,7 +172,11 @@ export function DetailBook(): JSX.Element {
                 <Button type="primary" icon={<MoneyCollectOutlined />}>
                   Buy Now
                 </Button>
-                <Button style={{marginLeft: 7}} type="primary" onClick={() => router.push("/chat-seller")} >
+                <Button
+                  style={{marginLeft: 7}}
+                  type="primary"
+                  onClick={() => router.push("/chat-seller")}
+                >
                   Chat with Seller
                 </Button>
               </div>

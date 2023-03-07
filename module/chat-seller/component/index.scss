@@ -28,7 +28,7 @@
       display: flex;
       margin-bottom: 12px;
       cursor: pointer;
-      &.active{
+      &.active {
         background-color: #188fff81;
         border-radius: 10px;
         padding: 2px 4px 0;
@@ -72,8 +72,8 @@
   }
 }
 .content-chat {
-    position: relative;
-    height: 100%;
+  position: relative;
+  height: 100%;
   .nav-chat {
     padding: 4px 12px;
     display: flex;
@@ -86,60 +86,60 @@
       gap: 10px;
       font-weight: 500;
     }
-    .nav-right{
-        gap: 10px;
-        display: flex;
-        .anticon{
-            padding: 6px;
-            border-radius: 50%;
-            background-color: rgba(204, 204, 204, 0.5);
-            cursor: pointer;
-            &:hover{
-                background-color: rgba(204, 204, 204, 0.8);
-            }
+    .nav-right {
+      gap: 10px;
+      display: flex;
+      .anticon {
+        padding: 6px;
+        border-radius: 50%;
+        background-color: rgba(204, 204, 204, 0.5);
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(204, 204, 204, 0.8);
         }
+      }
     }
   }
-  .content-chat-mess{
+  .content-chat-mess {
     height: calc(100vh - 160px);
     overflow-y: scroll;
     scroll-snap-align: center;
     padding-top: 12px;
-    
-    .mess-left{
-        .mess-main{
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: fit-content;
-            max-width: 45%;
-            margin: 12px 0 0 12px;
-            border-radius: 10px;
-            .ant-avatar{
-                width: 30px;
-                height: 30px;
-            }
-            .des-mess{
-                background-color: #ccc;
-                padding: 6px;
-                border-radius: 10px;
-                width: calc(100% - 30px);
-            }
+
+    .mess-left {
+      .mess-main {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        max-width: 45%;
+        margin: 12px 0 0 12px;
+        border-radius: 10px;
+        .ant-avatar {
+          width: 30px;
+          height: 30px;
         }
+        .des-mess {
+          background-color: #ccc;
+          padding: 6px;
+          border-radius: 10px;
+          width: calc(100% - 30px);
+        }
+      }
     }
-    .mess-right{
-        .des-mess{
-            margin: 0 12px 0 auto;
-            width: fit-content;
-            max-width: 45%;
-            background-color:  #188fff81;
-            padding: 6px;
-            border-radius: 10px;
-            margin-top: 12px;
-        }
+    .mess-right {
+      .des-mess {
+        margin: 0 12px 0 auto;
+        width: fit-content;
+        max-width: 45%;
+        background-color: #188fff81;
+        padding: 6px;
+        border-radius: 10px;
+        margin-top: 12px;
+      }
     }
   }
-  .control-mess{
+  .control-mess {
     position: absolute;
     height: 60px;
     width: 100%;
@@ -148,26 +148,26 @@
     align-items: center;
     justify-items: center;
     padding: 0 12px;
-     .ant-input{
-        height: 40px;
-        border-radius: 25px;
-        padding: 12px;
-     }
-     .anticon{
-        color: #1179dbf0;
-        cursor: pointer;
-        padding: 6px;
-        border-radius: 50%;
-        &:hover{
-            background-color: rgba(204, 204, 204, 0.5);
-        }
-     }
-     .anticon-plus-circle{
-        font-size: 20px;
-     }
-     .anticon-send{
-        font-size: 25px;
-        margin-left: 12px;
-     }
+    .ant-input {
+      height: 40px;
+      border-radius: 25px;
+      padding: 12px;
+    }
+    .anticon {
+      color: #1179dbf0;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      &:hover {
+        background-color: rgba(204, 204, 204, 0.5);
+      }
+    }
+    .anticon-plus-circle {
+      font-size: 20px;
+    }
+    .anticon-send {
+      font-size: 25px;
+      margin-left: 12px;
+    }
   }
 }

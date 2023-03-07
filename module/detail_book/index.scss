@@ -9,7 +9,6 @@
     height: 530px;
     //background-color: white;
 
-
     .main {
       display: flex;
       justify-content: space-between;
@@ -63,15 +62,15 @@
 
         .price {
           font-size: 20px;
-          color: #008BCF;
+          color: #008bcf;
           font-weight: 500;
         }
 
         .recommend-text {
           padding: 5px;
           margin: 12px 0;
-          color: #26A541;
-          background-color: #E8FFF3;
+          color: #26a541;
+          background-color: #e8fff3;
           width: 250px;
           display: flex;
           justify-content: center;
@@ -90,7 +89,7 @@
             height: 54px;
             width: 192px;
             border-radius: 8px;
-            color: #017DBD;
+            color: #017dbd;
             color: white;
           }
         }
@@ -157,7 +156,7 @@
         .row-info {
           width: 100%;
           margin-bottom: 20px;
-          background-color: #F0F2F5;
+          background-color: #f0f2f5;
           padding: 5px 6px;
           border-radius: 5px;
           display: flex;
@@ -181,7 +180,8 @@
             align-items: center;
             font-size: 15px;
 
-            h4,h5 {
+            h4,
+            h5 {
               margin-bottom: 0;
             }
             h5 {
@@ -191,6 +191,5 @@
         }
       }
     }
-
   }
 }

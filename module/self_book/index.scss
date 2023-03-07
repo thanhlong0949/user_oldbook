@@ -10,7 +10,6 @@
     border-radius: 15px;
     padding: 30px 40px;
 
-
     .item-formik {
       display: flex;
       width: 100%;
@@ -24,9 +23,9 @@
         position: relative;
 
         .icon-add {
-            position: absolute;
-            right: 10px;
-            top: 7px;
+          position: absolute;
+          right: 10px;
+          top: 7px;
         }
 
         .button-submit {
@@ -38,7 +37,6 @@
           margin-top: 8px;
           display: flex;
           color: gray;
-
 
           .item {
             background-color: white;

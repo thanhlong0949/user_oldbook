@@ -5,7 +5,7 @@ import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
 import {ButtonGlobal} from "@app/components/ButtonGlobal";
 import {Formik} from "formik";
 import {Radio, RadioChangeEvent, Upload, InputNumber} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import {PlusOutlined} from "@ant-design/icons";
 
 export function UserInfor(): JSX.Element {
   const [isChangeInfor, setIsChangeInfor] = useState<boolean>(false);
@@ -102,7 +102,7 @@ export function UserInfor(): JSX.Element {
             return (
               <div
                 className="formik-user-profile-container"
-                style={{width: "100%", padding:"0 24px"}}
+                style={{width: "100%", padding: "0 24px"}}
               >
                 <div className="user-profile-container">
                   {listItem.map((item, index) => (
@@ -203,13 +203,13 @@ export function UserInfor(): JSX.Element {
                               ) : (
                                 uploadButton
                               )} */}
-                              <PlusOutlined/>
+                              <PlusOutlined />
                             </Upload>
                           </div>
                           <ErrorMessageGlobal name="username" />
                         </div>
                       )}
-                       {item.type === "number" && (
+                      {item.type === "number" && (
                         <div className="form-item">
                           <div className="title">
                             <span>{item.title}:</span>
@@ -226,7 +226,11 @@ export function UserInfor(): JSX.Element {
                             )}
                           </div>
                           <div className="item-detail">
-                          <InputNumber min={1} max={100000} defaultValue={1} />
+                            <InputNumber
+                              min={1}
+                              max={100000}
+                              defaultValue={1}
+                            />
                           </div>
                           <ErrorMessageGlobal name="username" />
                         </div>
