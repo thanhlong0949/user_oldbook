@@ -54,6 +54,12 @@ const routes: IRoute[] = [
     isLanding: true,
   },
   {
+    path: "/payment",
+    name: "Thanh toán",
+    isSidebar: false,
+    isLanding: true,
+  },
+  {
     path: "/manager_popup",
     name: "Quản lý Popup",
     isSidebar: true,

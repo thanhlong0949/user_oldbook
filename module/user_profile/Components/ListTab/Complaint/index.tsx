@@ -209,7 +209,7 @@ export function Complaint(): JSX.Element {
           <ButtonGlobal
             onClick={handleSave}
             className="btn-save"
-            title="Lưu"
+            title="Gửi"
             type="primary-filled"
             // loading={login.isLoading}
           />

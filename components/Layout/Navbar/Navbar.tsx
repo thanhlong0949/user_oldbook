@@ -8,7 +8,7 @@ import Config from "@app/config";
 export default function Navbar(): JSX.Element {
   const router = useRouter();
   const avatar =
-    "https://anhdep.tv/attachments/0aac3787f518616d28029ce80066622a-jpeg.23908/";
+    "https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/334972655_1250962552172838_6099841797879242396_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=730e14&_nc_ohc=1LyiQzgrJucAX9vsC2h&_nc_ht=scontent.fhan15-2.fna&oh=00_AfBFquoYZ_23PuwE1ReO_AFFPoDdCpHDSEzwpZFxvBtBSQ&oe=640EEE56";
   const toSelfBook = (): void => {
     router.push("/self_book");
   };

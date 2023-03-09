@@ -18,6 +18,7 @@ import {BreakCrumGlobal} from "@app/components/BreakCrumGlobal";
 export function DetailBook(): JSX.Element {
   const router = useRouter();
   const keyPage = router.query.key;
+  console.log("keyPage", keyPage);
   const imagePreview = [
     {
       url: "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703",
@@ -99,6 +100,13 @@ export function DetailBook(): JSX.Element {
     },
   ];
 
+  const goToPayment = (value: string): void => {
+    router.push({
+      pathname: "/payment",
+      query: {keyPage: keyPage},
+    });
+  };
+
   const handleListImage = () => {
     return imagePreview.map((el, index) => (
       <div
@@ -117,8 +125,18 @@ export function DetailBook(): JSX.Element {
         <BreakCrumGlobal
           listBreakcrum={
             keyPage === "Bán"
-              ? ["Trang chủ", "Tất cả sách", "Bán sách"]
-              : ["Trang chủ", "Tất cả sách", "Trao đổi"]
+              ? [
+                  "Trang chủ",
+                  "Danh mục sản phẩm",
+                  "Tiểu thuyết",
+                  "Tiểu thuyết trinh thám",
+                ]
+              : [
+                  "Trang chủ",
+                  "Danh mục sản phẩm",
+                  "Tiểu thuyết",
+                  "Tiểu thuyết trinh thám",
+                ]
           }
         />
         <div className="main">
@@ -154,7 +172,11 @@ export function DetailBook(): JSX.Element {
               </div>
             ) : (
               <div>
-                <Button type="primary" icon={<MoneyCollectOutlined />}>
+                <Button
+                  onClick={() => goToPayment("Bán")}
+                  type="primary"
+                  icon={<MoneyCollectOutlined />}
+                >
                   Trao đổi
                 </Button>
                 <Button
@@ -169,7 +191,11 @@ export function DetailBook(): JSX.Element {
 
             {keyPage === "Bán" ? (
               <div className="button-sale">
-                <Button type="primary" icon={<MoneyCollectOutlined />}>
+                <Button
+                  type="primary"
+                  onClick={goToPayment}
+                  icon={<MoneyCollectOutlined />}
+                >
                   Mua ngay
                 </Button>
                 <Button
