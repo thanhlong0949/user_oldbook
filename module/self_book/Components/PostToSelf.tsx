@@ -1,15 +1,12 @@
 import React, {useState} from "react";
 import {SelfOneBook} from "@app/module/self_book/Components/SelfOneBook";
 import {Button, Image, Input, Select, Upload} from "antd";
-import {SelfSetBook} from "@app/module/self_book/Components/SelfSetBook";
 import {
   BookOutlined,
-  CloseCircleOutlined,
   DollarCircleOutlined,
   LoadingOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import {Icon} from "@app/components/Icon";
 import "./indexPostToSelf.scss";
 
 export function PostToSelf(): JSX.Element {
