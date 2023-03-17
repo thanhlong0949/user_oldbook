@@ -16,6 +16,8 @@ import {useRouter} from "next/router";
 
 interface ISelfSetBook {
   handleReset: () => void;
+  setListBook: any;
+  setKeyPage: any;
 }
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -36,7 +38,7 @@ const beforeUpload = (file: RcFile) => {
   return isJpgOrPng && isLt2M;
 };
 export function SelfOneBook(props: ISelfSetBook): JSX.Element {
-  const {handleReset} = props;
+  const {handleReset, setListBook, setKeyPage} = props;
   const router = useRouter();
   const [sellOrTrade, setSellOrderTrade] = useState<string>(""); // trade - sell - " "
   const [value, setValue] = useState(1);
@@ -113,7 +115,27 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
     setSellOrderTrade("");
   };
   const handleSubmit = (): void => {
-    router.push("/manager_permission");
+    setListBook((prev: any) => [
+      ...prev,
+      {
+        uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
+        title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
+        author: "Instant Research Institude",
+        price: "105.900 ₫",
+        status: "Bán",
+        category: "Tiểu thuyết",
+      },
+    ]);
+    // listBook.push({
+    //   uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
+    //   title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
+    //   author: "Instant Research Institude",
+    //   price: "105.900 ₫",
+    //   status: "Bán",
+    //   category: "Tiểu thuyết",
+    // });
+    setKeyPage("view");
+    // router.push("/manager_permission");
     console.log("handel submit");
   };
 
@@ -266,7 +288,7 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
           style={{marginRight: "5px"}}
           type="primary"
         >
-          OK
+          Save
         </Button>
       </div>
     </div>

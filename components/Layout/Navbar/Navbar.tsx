@@ -8,7 +8,7 @@ import Config from "@app/config";
 export default function Navbar(): JSX.Element {
   const router = useRouter();
   const avatar =
-    "https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-6/334972655_1250962552172838_6099841797879242396_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=730e14&_nc_ohc=1LyiQzgrJucAX9vsC2h&_nc_ht=scontent.fhan15-2.fna&oh=00_AfBFquoYZ_23PuwE1ReO_AFFPoDdCpHDSEzwpZFxvBtBSQ&oe=640EEE56";
+    "https://scontent-sin6-2.xx.fbcdn.net/v/t39.30808-6/334624012_741521090832993_3890590875594134526_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=730e14&_nc_ohc=0MRcqh_Ua1QAX-mOx7b&_nc_ht=scontent-sin6-2.xx&oh=00_AfBwPoxjCUxfPp86ogjuUtXGz-yqlON6lZn_H0sW6--KJQ&oe=640FC6F6";
   const toSelfBook = (): void => {
     router.push("/self_book");
   };
