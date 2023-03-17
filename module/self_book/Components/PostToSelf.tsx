@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import {SelfOneBook} from "@app/module/self_book/Components/SelfOneBook";
-import {Button, Image} from "antd";
+import {Button, Image, Input, Select, Upload} from "antd";
 import {SelfSetBook} from "@app/module/self_book/Components/SelfSetBook";
 import {
   BookOutlined,
   CloseCircleOutlined,
   DollarCircleOutlined,
+  LoadingOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import {Icon} from "@app/components/Icon";
 import "./indexPostToSelf.scss";
@@ -13,6 +15,8 @@ import "./indexPostToSelf.scss";
 export function PostToSelf(): JSX.Element {
   const [value, setValue] = useState<number | undefined>(undefined);
   const [keyPage, setKeyPage] = useState("view"); // view || post
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [loading, setLoading] = useState(false);
   const [listBook, setListBook] = useState([
     {
       uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
@@ -33,32 +37,14 @@ export function PostToSelf(): JSX.Element {
     setKeyPage("post");
   };
 
-  const listBook11 = [
-    {
-      uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
-      title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
-      author: "Instant Research Institude",
-      price: "105.900 ₫",
-      status: "Bán",
-      category: "Tiểu thuyết",
-    },
-    // {
-    //   uri: "https://salt.tikicdn.com/cache/750x750/media/catalog/producttmp/25/4d/52/6e5a9b48c1316dc3ccc55df2c955ec24.jpg.webp",
-    //   title: "Sách Thay Đổi Cuộc Sống Với Nhân Số Học - Lê Đỗ Quỳnh Hương",
-    //   author: "Instant Research Institude",
-    //   price: "148.100 ₫",
-    //   status: "Bán",
-    //   category: "Tiểu thuyết"
-    // },
-    // {
-    //   uri: "https://salt.tikicdn.com/cache/750x750/ts/product/07/3e/ae/26cc99e58483d0030de5e8dc777e3d81.jpg.webp",
-    //   title: "Sách Người trong muôn nghề",
-    //   author: "Instant Research Institude",
-    //   price: "169.000 ₫",
-    //   status: "Trao đổi",
-    //   category: "Tiểu thuyết"
-    // },
-  ];
+  const handleChangeUploadImage = (): void => {};
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{marginTop: 8}}>Tải ảnh lên</div>
+    </div>
+  );
 
   return (
     <div className="post-to-self-container">
@@ -90,6 +76,98 @@ export function PostToSelf(): JSX.Element {
               Thêm sách
             </Button>
           </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Danh mục sách</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Select
+                defaultValue="Tiểu thuyết"
+                style={{width: 120}}
+                // onChange={handleChange}
+                // options={dataList}
+              />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Thể loại sách</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Nhập thể loại sách" />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Tiêu đề bài đăng</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Nhập thể loại sách" />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Ảnh bài đăng</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                // beforeUpload={beforeUpload}
+                onChange={handleChangeUploadImage}
+              >
+                {imageUrl ? (
+                  <img src={imageUrl} alt="avatar" style={{width: "100%"}} />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Thể loại sách</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Nhập thể loại sách" />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Gía gốc</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Nhập giá gốc" />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Gía bán</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Nhập giá" />
+            </div>
+          </div>
+          <div className="item-formik">
+            <div className="title-text">
+              <span>Thêm địa chỉ</span>
+              <span className="require">*</span>
+            </div>
+            <div className="action-item">
+              <Input placeholder="Số nhà - tên đường - phường/xã - quận/huyện - tỉnh/TP" />
+            </div>
+          </div>
+
           {value === undefined && (
             <div className="home-list-book">
               {listBook.map((item, index) => (

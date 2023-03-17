@@ -184,29 +184,29 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
           Chọn lại
         </Button>
       </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Danh mục sách</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
-          <Select
-            defaultValue="Tiểu thuyết"
-            style={{width: 120}}
-            onChange={handleChange}
-            options={dataList}
-          />
-        </div>
-      </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Thể loại sách</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
-          <Input placeholder="Nhập thể loại sách" />
-        </div>
-      </div>
+      {/* <div className="item-formik"> */}
+      {/*  <div className="title-text"> */}
+      {/*    <span>Danh mục sách</span> */}
+      {/*    <span className="require">*</span> */}
+      {/*  </div> */}
+      {/*  <div className="action-item"> */}
+      {/*    <Select */}
+      {/*      defaultValue="Tiểu thuyết" */}
+      {/*      style={{width: 120}} */}
+      {/*      onChange={handleChange} */}
+      {/*      options={dataList} */}
+      {/*    /> */}
+      {/*  </div> */}
+      {/* </div> */}
+      {/* <div className="item-formik"> */}
+      {/*  <div className="title-text"> */}
+      {/*    <span>Thể loại sách</span> */}
+      {/*    <span className="require">*</span> */}
+      {/*  </div> */}
+      {/*  <div className="action-item"> */}
+      {/*    <Input placeholder="Nhập thể loại sách" /> */}
+      {/*  </div> */}
+      {/* </div> */}
       <div className="item-formik">
         <div className="title-text">
           <span>ISBN</span>
@@ -260,24 +260,24 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
         </div>
       </div>
 
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Gía gốc</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
-          <Input placeholder="Nhập giá gốc" />
-        </div>
-      </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Gía bán</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
-          <Input placeholder="Nhập giá" />
-        </div>
-      </div>
+      {/* <div className="item-formik"> */}
+      {/*  <div className="title-text"> */}
+      {/*    <span>Gía gốc</span> */}
+      {/*    <span className="require">*</span> */}
+      {/*  </div> */}
+      {/*  <div className="action-item"> */}
+      {/*    <Input placeholder="Nhập giá gốc" /> */}
+      {/*  </div> */}
+      {/* </div> */}
+      {/* <div className="item-formik"> */}
+      {/*  <div className="title-text"> */}
+      {/*    <span>Gía bán</span> */}
+      {/*    <span className="require">*</span> */}
+      {/*  </div> */}
+      {/*  <div className="action-item"> */}
+      {/*    <Input placeholder="Nhập giá" /> */}
+      {/*  </div> */}
+      {/* </div> */}
 
       <div style={{display: "flex", justifyContent: "flex-end"}}>
         <Button onClick={handleCancel} style={{marginRight: "5px"}}>
