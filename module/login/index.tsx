@@ -130,10 +130,20 @@ export function Login(): JSX.Element {
                   Nhớ tài khoản
                 </CheckboxGlobal>
 
-                <span className="forgot-password_link">Quên mật khẩu?</span>
-                <span onClick={handleRegister} className="forgot-password_link">
-                  Đăng kí
-                </span>
+                <div>
+                  {/* <span */}
+                  {/*  className="forgot-password_link" */}
+                  {/*  style={{marginRight: 10}} */}
+                  {/* > */}
+                  {/*  Quên mật khẩu? */}
+                  {/* </span> */}
+                  <span
+                    onClick={handleRegister}
+                    className="forgot-password_link"
+                  >
+                    Đăng kí
+                  </span>
+                </div>
               </div>
 
               <ButtonGlobal
