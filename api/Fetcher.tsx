@@ -2,18 +2,20 @@ import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from "axios";
 import {notification} from "antd";
 import _ from "lodash";
 import Config from "../config";
-import store from "../redux/store";
+import store, {persistor} from "../redux/store";
+import ListErrorMessage from "./ErrorMessage/ListErrorMessage";
+import {loginUser, logoutUser} from "../redux/slices/UserSlice";
 
 export interface IDataError {
-  errorCode?: string | number;
-  errorMessageArr?: any[];
+  errorCode: string;
+  errorMessage?: string;
 }
 
 export interface IMetadata {
   time?: string;
-  totalPages: number;
-  totalItems: number;
-  currentPage: number;
+  totalPages?: number;
+  totalItems?: number;
+  currentPage?: number;
   pageSize?: number;
 }
 
@@ -22,18 +24,20 @@ export interface IDataWithMeta<T> {
   data: T;
 }
 
-export interface IResponseDTO {
-  status: boolean;
-  headerCode: number;
-  errorCode: number;
-  responses?: any;
+export interface IResponseDTO<T> {
+  success: boolean;
+  errorCode: string;
+  message?: string;
+  meta?: IMetadata;
+  data?: T;
 }
-interface IErrorDTO {
-  status?: boolean;
-  headerCode?: number;
-  response: {
-    message: any;
-  };
+
+interface IResponseWithMetadataDTO<T> {
+  success: boolean;
+  errorCode: string;
+  message?: string;
+  meta: IMetadata;
+  data?: T;
 }
 
 interface IFetcherOptions {
@@ -41,8 +45,6 @@ interface IFetcherOptions {
   withToken?: boolean;
   withMetadata?: boolean;
   displayError?: boolean;
-  displaySuccess?: boolean;
-  typeSuccess?: "delete" | "add" | "update" | "default" | string;
 }
 
 export interface IRefreshToken {
@@ -50,45 +52,91 @@ export interface IRefreshToken {
   refreshToken: string;
 }
 
+function logout(): void {
+  persistor
+    .purge()
+    .then(() => {
+      store.dispatch(logoutUser());
+      window.location.href = "/login";
+    })
+    .catch(() => {
+      // eslint-disable-next-line no-alert
+      window.alert("Trình duyệt bị lỗi. Xóa Cookie trình duyệt và thử lại");
+    });
+}
+
+function confirmLogout(
+  msg: string,
+  cnt: string,
+  isRequiredLogOut: boolean
+): void {
+  logout();
+  // Modal.destroyAll();
+  // if (!isRequiredLogOut) {
+  //   Modal.confirm({
+  //     title: msg,
+  //     content: cnt,
+  //     onOk: (): void => logout(),
+  //     // onCancel: (): void => logout(),
+  //   });
+  // } else {
+  //   Modal.confirm({
+  //     title: msg,
+  //     content: cnt,
+  //     onOk: (): void => logout(),
+  //     onCancel: (): void => logout(),
+  //   });
+  // }
+}
+
 function displayError(dataError: IDataError): void {
   try {
+    const {errorCode} = dataError;
     let errorMessage;
-    const {errorMessageArr} = dataError;
-    if (errorMessageArr) {
-      errorMessage = Object.values(errorMessageArr);
+    let errorMessageMain;
+
+    const error = ListErrorMessage.find((dt) => dt.error_code === errorCode);
+    if (error) {
+      errorMessage = error.description;
+      errorMessageMain = error.message;
     } else {
-      errorMessage = "Có lỗi xảy ra.Vui lòng liên hệ bộ phận kĩ thuật";
+      errorMessage = dataError.errorMessage ?? "Somethings Wrong";
     }
 
     notification.error({
-      message: errorMessageArr ? errorMessage[0] : errorMessage,
+      message: errorMessageMain || "Có lỗi xảy ra. Hãy thử lại!",
+      description: errorMessage,
       duration: 3,
     });
   } catch (e) {
     notification.error({
-      message: "Có lỗi xảy ra",
-      description: _.toString(e) || "Vui lòng liên hệ bộ phận kĩ thuật",
+      message: "Có lỗi xảy ra. Hãy thử lại!",
+      description: _.toString(e),
       duration: 3,
     });
   }
 }
-function displaySuccess(typeSuccess: string): void {
-  let sucessMessage;
-  if (typeSuccess) {
-    if (typeSuccess === "delete") sucessMessage = "Xóa thành công";
-    else if (typeSuccess === "add") sucessMessage = "Thêm thành công";
-    else sucessMessage = "Cập nhật thành công";
-    notification.success({
-      message: sucessMessage,
-      duration: 3,
-    });
-  } else {
-    notification.error({
-      message: "Có lỗi xảy ra.Vui lòng liên hệ bộ phận kĩ thuật",
-      duration: 3,
-    });
-  }
+
+function handleRefreshToken(): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    fetcher<IRefreshToken>(
+      {
+        url: "/auth/refresh-token",
+        method: "post",
+        data: {refreshToken: store.getState().user?.refreshToken},
+      },
+      {displayError: false}
+    )
+      .then((res) => {
+        store.dispatch(loginUser(res));
+        resolve(true);
+      })
+      .catch(() => {
+        resolve(false);
+      });
+  });
 }
+
 export async function fetcher<T>(
   config: AxiosRequestConfig,
   options: IFetcherOptions = {}
@@ -97,8 +145,6 @@ export async function fetcher<T>(
     withToken: Config.NETWORK_CONFIG.USE_TOKEN,
     withMetadata: Config.NETWORK_CONFIG.WITH_METADATA,
     displayError: Config.NETWORK_CONFIG.DISPLAY_ERROR,
-    displaySuccess: Config.NETWORK_CONFIG.DISPLAY_SUCCESS,
-    typeSuccess: Config.NETWORK_CONFIG.TYPE_SUCCESS,
     ...options,
   };
 
@@ -125,13 +171,14 @@ export async function fetcher<T>(
 
   return new Promise<T>((resolve, reject) => {
     apiClient
-      .request<T, AxiosResponse<IResponseDTO>>(config)
+      .request<T, AxiosResponse<IResponseDTO<T>>>(config)
       .then(async (response) => {
-        if (response.data.status) {
-          if (response.data.responses === undefined) {
+        console.log("response fetcher", response);
+        if (response.data) {
+          if (response.data.data === undefined) {
             const dataEmpty: IDataError = {
               errorCode: "ERROR???",
-              errorMessageArr: [{err: ["Không có dữ liệu"]}],
+              errorMessage: "Data is empty",
             };
             if (defaultOptions.displayError) {
               displayError(dataEmpty);
@@ -139,35 +186,85 @@ export async function fetcher<T>(
             reject(dataEmpty);
             return;
           }
-          if (defaultOptions.displaySuccess) {
-            displaySuccess(defaultOptions.typeSuccess as string);
-          }
-          resolve(response.data.responses);
+          resolve(response.data.data);
           return;
         }
         const dataError: IDataError = {
-          errorCode: response?.data?.headerCode,
-          errorMessageArr: response?.data?.responses?.message,
+          errorCode: response.data.errorCode,
+          errorMessage: response.data.message,
         };
+        if (dataError?.errorCode === "AUTH000221") {
+          try {
+            const checkRefresh = await handleRefreshToken();
+            if (checkRefresh) {
+              const data = await fetcher<T>(config, options);
+              resolve(data);
+            } else {
+              // confirmLogout(
+              //   "Phiên đăng nhập hết hạn",
+              //   "Vui lòng đăng nhập lại!",
+              //   false
+              // );
+            }
+            return;
+          } catch (error) {
+            confirmLogout(
+              "Phiên đăng nhập hết hạn",
+              "Vui lòng đăng nhập lại!",
+              false
+            );
+            return;
+          }
+        }
+        if (dataError?.errorCode === "AUTH000220") {
+          confirmLogout(
+            "Phiên đăng nhập hết hạn",
+            "Vui lòng đăng nhập lại!",
+            true
+          );
+          return;
+        }
+        if (
+          dataError?.errorCode === "JWT000201" ||
+          dataError?.errorCode === "ROLE011G" ||
+          dataError?.errorCode === "JWT011G"
+        ) {
+          confirmLogout(
+            "Bạn chưa đăng nhập",
+            "Vui lòng đăng nhập để sử dụng chức năng này!",
+            false
+          );
+          return;
+        }
         if (defaultOptions.displayError) {
           displayError(dataError);
         }
         reject(dataError);
       })
-      .catch((error: AxiosError<IErrorDTO>) => {
+      .catch((error: Error | AxiosError) => {
         if (axios.isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            notification.error({
-              message: "Phiên đăng nhập đã hết hạn",
-              description: "Vui lòng đăng nhập lại",
-            });
-            window.location.href = "/login";
-          } else {
-            const dataError: IDataError = {
-              errorCode: error.response?.data?.headerCode,
-              errorMessageArr: error.response?.data?.response?.message,
-            };
+          // Axios error
+          const somethingsWrong: IDataError = {
+            errorCode: "ERROR???",
+            errorMessage: "Somethings Wrong",
+          };
 
+          const dataError: IDataError =
+            (error?.response?.data as IDataError) ?? somethingsWrong;
+
+          if (dataError?.errorCode === "AUTH3001.NotAuthenticated") {
+            persistor
+              .purge()
+              .then(() => {
+                window.location.reload();
+              })
+              .catch(() => {
+                // eslint-disable-next-line no-alert
+                window.alert(
+                  "Trình duyệt bị lỗi. Xóa Cookie trình duyệt và thử lại"
+                );
+              });
+          } else {
             if (defaultOptions.displayError) {
               displayError(dataError);
             }
@@ -175,7 +272,7 @@ export async function fetcher<T>(
         } else {
           // Native error
           notification.error({
-            message: "Something is wrong. Please try again",
+            message: "Có lỗi xảy ra. Hãy thử lại!",
             description: _.toString(error),
           });
         }
@@ -185,13 +282,17 @@ export async function fetcher<T>(
   });
 }
 
-export async function downloadFile({
-  url,
-  params,
-}: {
-  url: string;
-  params?: any;
-}): Promise<unknown> {
+export async function fetcherWithMetadata<T>(
+  config: AxiosRequestConfig,
+  options: IFetcherOptions = {}
+): Promise<{data: T; meta: IMetadata}> {
+  const defaultOptions: IFetcherOptions = {
+    withToken: Config.NETWORK_CONFIG.USE_TOKEN,
+    withMetadata: true,
+    displayError: Config.NETWORK_CONFIG.DISPLAY_ERROR,
+    ...options,
+  };
+
   const apiClient = axios.create({
     headers: {
       "Content-Type": "application/json",
@@ -201,42 +302,129 @@ export async function downloadFile({
   });
 
   // Access Token
-  const state = store.getState();
-  const token = state.user?.accessToken;
-  if (token) {
-    apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
+  if (defaultOptions.withToken) {
+    const state = store.getState();
+    const token = state.user?.accessToken;
+    if (token) {
+      apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<{data: T; meta: IMetadata}>((resolve, reject) => {
     apiClient
-      .request<unknown, AxiosResponse<Blob>>({
-        url: url,
-        method: "GET",
-        responseType: "blob",
-        params: params,
+      .request<T, AxiosResponse<IResponseWithMetadataDTO<T>>>(config)
+      .then(async (response) => {
+        if (response.data.success) {
+          if (response.data.data === undefined) {
+            const dataEmpty: IDataError = {
+              errorCode: "ERROR???",
+              errorMessage: "Data is empty",
+            };
+            if (defaultOptions.displayError) {
+              displayError(dataEmpty);
+            }
+            reject(dataEmpty);
+            return;
+          }
+
+          resolve({
+            data: response.data.data,
+            meta: response.data.meta,
+          });
+          return;
+        }
+        const dataError: IDataError = {
+          errorCode: response.data.errorCode,
+          errorMessage: response.data.message,
+        };
+        if (dataError?.errorCode === "AUTH000221") {
+          try {
+            const checkRefresh = await handleRefreshToken();
+            if (checkRefresh) {
+              const data = await fetcher<{data: T; meta: IMetadata}>(
+                config,
+                options
+              );
+              resolve(data);
+            } else {
+              // confirmLogout(
+              //   "Phiên đăng nhập hết hạn",
+              //   "Vui lòng đăng nhập lại!",
+              //   false
+              // );
+            }
+            return;
+          } catch (error) {
+            confirmLogout(
+              "Phiên đăng nhập hết hạn",
+              "Vui lòng đăng nhập lại!",
+              false
+            );
+            return;
+          }
+        }
+        if (dataError?.errorCode === "AUTH000220") {
+          confirmLogout(
+            "Phiên đăng nhập hết hạn",
+            "Vui lòng đăng nhập lại!",
+            true
+          );
+          return;
+        }
+        if (
+          dataError?.errorCode === "JWT000201" ||
+          dataError?.errorCode === "AUTH000220"
+        ) {
+          confirmLogout(
+            "Bạn chưa đăng nhập",
+            "Vui lòng đăng nhập để sử dụng chức năng này!",
+            false
+          );
+          return;
+        }
+        if (defaultOptions.displayError) {
+          displayError(dataError);
+        }
+        reject(dataError);
       })
-      .then((response) => {
-        const href = window.URL.createObjectURL(new Blob([response.data]));
+      .catch((error: Error | AxiosError) => {
+        if (axios.isAxiosError(error)) {
+          // Axios error
+          const somethingsWrong: IDataError = {
+            errorCode: "ERROR???",
+            errorMessage: "Somethings Wrong",
+          };
 
-        const link = document.createElement("a");
-        link.href = href;
-        link.setAttribute("download", `${url}.xlsx`);
-        document.body.appendChild(link);
-        link.click();
+          const dataError: IDataError =
+            (error?.response?.data as IDataError) ?? somethingsWrong;
 
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(href);
-        notification.success({
-          message: "File đang được tải về",
-        });
+          if (dataError?.errorCode === "AUTH3001.NotAuthenticated") {
+            persistor
+              .purge()
+              .then(() => {
+                window.location.reload();
+              })
+              .catch(() => {
+                // eslint-disable-next-line no-alert
+                window.alert(
+                  "Trình duyệt bị lỗi. Xóa Cookie trình duyệt và thử lại"
+                );
+              });
+          } else {
+            if (defaultOptions.displayError) {
+              displayError(dataError);
+            }
+          }
+        } else {
+          // Native error
+          // notification.error({
+          //   message: "Có lỗi xảy ra. Hãy thử lại!",
+          //   description: _.toString(error),
+          //   duration: 3,
+          // });
+        }
 
-        resolve("OK");
-      })
-      .catch(() => {
-        notification.error({
-          message: "Tải file không thành công",
-        });
-        reject();
+        return reject(error);
       });
   });
 }

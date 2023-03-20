@@ -44,6 +44,10 @@ export function Login(): JSX.Element {
     pass_jwt: "",
   };
 
+  const handleRegister = (): void => {
+    router.push("/register");
+  };
+
   const login = useMutation(ApiUser.login);
   const handleLogin = (value: UserAccount): void => {
     router.push("/home");
@@ -127,6 +131,9 @@ export function Login(): JSX.Element {
                 </CheckboxGlobal>
 
                 <span className="forgot-password_link">Quên mật khẩu?</span>
+                <span onClick={handleRegister} className="forgot-password_link">
+                  Đăng kí
+                </span>
               </div>
 
               <ButtonGlobal

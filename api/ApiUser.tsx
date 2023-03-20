@@ -36,10 +36,22 @@ export interface IGetUserResponse {
   };
 }
 
+export interface IRegisterBody {
+  name?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
+}
+
 const path = {
   getUser: "/auth/get-user",
   login: "/auth/login",
+  register: "/auth/register-user",
 };
+
+function register(body: IRegisterBody): Promise<never> {
+  return fetcher({url: path.register, method: "post", data: body});
+}
 
 function login(body: ILoginBody): Promise<ILoginResponse> {
   return fetcher(
@@ -61,4 +73,5 @@ export default {
   login,
   isLogin,
   getUser,
+  register,
 };

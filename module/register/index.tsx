@@ -2,11 +2,7 @@ import React from "react";
 import "./index.scss";
 import {Formik} from "formik";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {
-  CheckboxGlobal,
-  InputGlobal,
-  InputPasswordGlobal,
-} from "@app/components/InputGlobal";
+import {InputGlobal, InputPasswordGlobal} from "@app/components/InputGlobal";
 import {
   MailOutlined,
   PhoneOutlined,
@@ -16,75 +12,81 @@ import {
 import {ButtonGlobal} from "@app/components/ButtonGlobal";
 import ApiUser from "@app/api/ApiUser";
 import {useMutation} from "react-query";
-import {useDispatch} from "react-redux";
-// import {loginUser} from "@app/redux/slices/UserSlice";
 import {useRouter} from "next/router";
-// import {LoginValidation} from "@app/validation/login/LoginValidation";
-// import {IRootState} from "@app/redux/store";
-import {
-  noRememberAccount,
-  rememberAccount,
-} from "@app/redux/slices/RememberAccountSlice";
+import {notification} from "antd";
 
 interface UserAccount {
-  username: string;
+  name: string;
   password: string;
   phoneNumber: string;
   email: string;
-  remember: boolean;
-  pass_jwt: string;
 }
 
 export function Register(): JSX.Element {
-  const dispatch = useDispatch();
   const router = useRouter();
-
   // const isRemember = useSelector(
   //   (state: IRootState) => state.remember.isRemember
   // );
 
   const initialValues: UserAccount = {
-    username: "",
+    name: "",
     password: "",
     phoneNumber: "",
     email: "",
-    remember: false,
-    pass_jwt: "",
   };
 
-  const login = useMutation(ApiUser.login);
-  const handleRegister = (value: UserAccount): void => {
-    router.push("/login");
-    // login.mutate(
-    //   {
-    //     username: value.username.trim(),
-    //     password: value.password.trim(),
-    //     has_role: true,
-    //   },
-    //   {
-    //     onSuccess: (res) => {
-    //       const dataUser = {
-    //         accessToken: res.response.access_token,
-    //         expires_in: res.response.expires_in,
-    //         role: res.role,
-    //         pass_jwt: res.response.pass_jwt,
-    //       };
-    //       dispatch(loginUser(dataUser));
-    //       router.push("/");
-    //     },
-    //   }
-    // );
+  const register = useMutation(ApiUser.register);
+  const handleRegister = async (value: UserAccount): Promise<void> => {
+    console.log("vcalue", value);
+    await register.mutate(
+      {
+        name: value.name.trim(),
+        email: value.email.trim(),
+        phoneNumber: value.phoneNumber.trim(),
+        password: value.password.trim(),
+        // has_role: true,
+      },
+      {
+        onSuccess: (res: any) => {
+          notification.success({
+            message: "Đăng kí thành công",
+            duration: 3,
+          });
+          router.push("/login");
+
+          if (res !== undefined) {
+            console.log("res register", res);
+          }
+          console.log("ssss");
+          // const dataUser = {
+          //   accessToken: res.response.access_token,
+          //   expires_in: res.response.expires_in,
+          //   role: res.role,
+          //   pass_jwt: res.response.pass_jwt,
+          // };
+          // dispatch(loginUser(dataUser));
+          // router.push("/");
+        },
+        onError: (res) => {
+          console.log("ddd", res);
+          notification.error({
+            message: "Đăng kí thất bại, vui lòng thử lại",
+            duration: 3,
+          });
+        },
+      }
+    );
   };
 
-  const handleCheckRemember = (checked: boolean): void => {
-    if (checked) {
-      dispatch(rememberAccount());
-      sessionStorage.removeItem("isRemember");
-    } else {
-      dispatch(noRememberAccount());
-      sessionStorage.setItem("isRemember", "false");
-    }
-  };
+  // const handleCheckRemember = (checked: boolean): void => {
+  //   if (checked) {
+  //     dispatch(rememberAccount());
+  //     sessionStorage.removeItem("isRemember");
+  //   } else {
+  //     dispatch(noRememberAccount());
+  //     sessionStorage.setItem("isRemember", "false");
+  //   }
+  // };
 
   return (
     <Formik
@@ -105,7 +107,7 @@ export function Register(): JSX.Element {
             <div className="login-container">
               <div className="login-form-item">
                 <InputGlobal
-                  name="username"
+                  name="name"
                   placeholder="Username"
                   prefix={<UserOutlined />}
                   className="input_login"
@@ -150,7 +152,7 @@ export function Register(): JSX.Element {
                 className="btn-login"
                 title="Đăng kí"
                 type="primary-filled"
-                loading={login.isLoading}
+                loading={register.isLoading}
               />
             </div>
           </div>
