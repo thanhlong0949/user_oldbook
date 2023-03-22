@@ -2,17 +2,16 @@ import {fetcher} from "./Fetcher";
 import store from "../redux/store";
 
 export interface ILoginBody {
-  username: string;
+  email: string;
   password: string;
-  has_role: boolean;
 }
 export interface ILoginResponse {
-  response: {
-    access_token: string;
-    expires_in: number;
-    pass_jwt: string;
+  successCode?: string;
+  data: {
+    id?: number;
+    name?: number;
+    accessToken?: string;
   };
-  role: any;
 }
 
 export interface IParamsGetUser {

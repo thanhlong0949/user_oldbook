@@ -5,6 +5,8 @@ import {useRouter} from "next/router";
 import {DollarCircleOutlined} from "@ant-design/icons";
 import {Icon} from "@app/components/Icon";
 import {BreakCrumGlobal} from "@app/components/BreakCrumGlobal";
+import {useSelector} from "react-redux";
+import {IRootState} from "@app/redux/store";
 
 export function ManagerPermission(): JSX.Element {
   const router = useRouter();
@@ -16,6 +18,9 @@ export function ManagerPermission(): JSX.Element {
       query: {key: key},
     });
   };
+  const isRemember = useSelector((state: IRootState) => state.user);
+
+  console.log("state.user", isRemember);
 
   console.log("dataFilter", dataFilter);
 
