@@ -2,13 +2,12 @@ import React, {useEffect, useState} from "react";
 import "./index.scss";
 import {
   Radio,
-  RadioChangeEvent,
   Upload,
-  Image,
   Form,
   Input,
   DatePicker,
   Button,
+  notification,
 } from "antd";
 import {PlusOutlined, LoadingOutlined} from "@ant-design/icons";
 import ApiUser from "@app/api/ApiUser";
@@ -17,16 +16,11 @@ import moment from "moment";
 import store from "@app/redux/store";
 
 export function UserInfor(): JSX.Element {
-  const [value, setValue] = useState(1);
   const [imageUrl, setImageUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [data, setData] = useState<any>();
 
-  const onChangeRadio = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
-  };
   const handleSubmit = (dataNew: any) => {
       const putData = {
         ...dataNew,
@@ -36,11 +30,19 @@ export function UserInfor(): JSX.Element {
         password: store.getState()?.user?.password,
       }
       ApiUser.updateUser(putData).then((res: any) => {
+        notification.success({
+          message: "Sửa thông tin thành công"
+        })
         setData({
           ...res,
           dob: moment(res.dob),
         });
         setImageUrl(res?.imageUrl);
+      })
+      .catch(() => {
+        notification.error({
+          message: "Sửa thông tin thất bại"
+        })
       })
   };
 
