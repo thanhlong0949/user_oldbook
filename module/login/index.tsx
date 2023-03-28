@@ -3,7 +3,6 @@ import "./index.scss";
 import {Formik} from "formik";
 import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
 import {
-  CheckboxGlobal,
   InputGlobal,
   InputPasswordGlobal,
 } from "@app/components/InputGlobal";
@@ -14,13 +13,7 @@ import {useMutation} from "react-query";
 import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "@app/redux/slices/UserSlice";
 import {useRouter} from "next/router";
-// import {LoginValidation} from "@app/validation/login/LoginValidation";
-// import {IRootState} from "@app/redux/store";
-import {
-  noRememberAccount,
-  rememberAccount,
-} from "@app/redux/slices/RememberAccountSlice";
-import {IRootState} from "@app/redux/store";
+import { notification } from "antd";
 
 interface UserAccount {
   email: string;
@@ -55,14 +48,16 @@ export function Login(): JSX.Element {
         password: value.password.trim(),
       },
       {
-        onSuccess: (res) => {
-          console.log("res", res);
-          console.log("res", res);
-          const dataUser = {
-            accessToken: res.data.accessToken,
-          };
-          dispatch(loginUser(dataUser));
-          router.push("/");
+        onSuccess: (res: any) => {
+          if(res){
+            dispatch(loginUser(res));
+            router.push("/");
+          }
+          else{
+            notification.error({
+              message: "Tài khoản hoặc mật khẩu không chính xác"
+            })
+          }
         },
       }
     );

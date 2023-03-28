@@ -7,8 +7,9 @@ import ListErrorMessage from "./ErrorMessage/ListErrorMessage";
 import {loginUser, logoutUser} from "../redux/slices/UserSlice";
 
 export interface IDataError {
-  errorCode: string;
+  errorCode?: string;
   errorMessage?: string;
+  
 }
 
 export interface IMetadata {
@@ -25,8 +26,8 @@ export interface IDataWithMeta<T> {
 }
 
 export interface IResponseDTO<T> {
-  success: boolean;
-  errorCode: string;
+  success?: boolean;
+  errorCode?: string;
   message?: string;
   meta?: IMetadata;
   data?: T;
@@ -52,7 +53,7 @@ export interface IRefreshToken {
   refreshToken: string;
 }
 
-function logout(): void {
+export function logout(): void {
   persistor
     .purge()
     .then(() => {
@@ -98,7 +99,7 @@ function displayError(dataError: IDataError): void {
     const error = ListErrorMessage.find((dt) => dt.error_code === errorCode);
     if (error) {
       errorMessage = error.description;
-      errorMessageMain = error.message;
+      errorMessageMain = error?.message;
     } else {
       errorMessage = dataError.errorMessage ?? "Somethings Wrong";
     }
@@ -152,7 +153,7 @@ export async function fetcher<T>(
     headers: {
       "Content-Type": "application/json",
     },
-    baseURL: Config.NETWORK_CONFIG.API_BASE_URL,
+    baseURL: "https://lobster-app-uadur.ondigitalocean.app/api",
     timeout: Config.NETWORK_CONFIG.TIMEOUT,
   });
 
@@ -162,7 +163,7 @@ export async function fetcher<T>(
   } else {
     if (defaultOptions.withToken) {
       const state = store.getState();
-      const token = state.user?.accessToken;
+      const token = state.user?.accesstoken;
       if (token) {
         apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
@@ -173,7 +174,7 @@ export async function fetcher<T>(
     apiClient
       .request<T, AxiosResponse<IResponseDTO<T>>>(config)
       .then(async (response) => {
-        console.log("response fetcher", response);
+        // console.log("response fetcher", response);
         if (response.data) {
           if (response.data.data === undefined) {
             const dataEmpty: IDataError = {
@@ -190,8 +191,8 @@ export async function fetcher<T>(
           return;
         }
         const dataError: IDataError = {
-          errorCode: response.data.errorCode,
-          errorMessage: response.data.message,
+          errorCode: response.data ,
+          errorMessage: response.data,
         };
         if (dataError?.errorCode === "AUTH000221") {
           try {
@@ -304,7 +305,7 @@ export async function fetcherWithMetadata<T>(
   // Access Token
   if (defaultOptions.withToken) {
     const state = store.getState();
-    const token = state.user?.accessToken;
+    const token = state.user?.accesstoken;
     if (token) {
       apiClient.defaults.headers.common.Authorization = `Bearer ${token}`;
     }

@@ -8,7 +8,7 @@
 
         .item-book {
           width: 180px;
-          height: 340px;
+          min-height: 300px;
           // margin-right: 20px;
           // margin-bottom: 30px;
           display: flex;
@@ -20,7 +20,12 @@
 
           .icon-delete {
             display: flex;
-            justify-content: end;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+            .anticon-close-circle{
+              font-size: 22px;
+               color: red;
+            }
           }
         }
         .item-book:hover {

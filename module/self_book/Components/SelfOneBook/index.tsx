@@ -8,11 +8,16 @@ import {
   RadioChangeEvent,
   Select,
   Upload,
+  Form,
+  DatePicker,
 } from "antd";
 import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
-import type {UploadChangeParam} from "antd/es/upload";
+// import type {UploadChangeParam} from "antd/es/upload";
 import type {RcFile, UploadFile, UploadProps} from "antd/es/upload/interface";
+import moment from "moment";
 import {useRouter} from "next/router";
+import {upLoadImage} from "@app/utils/firebase/uploadImage";
+import {uuidv4} from "@firebase/util";
 
 interface ISelfSetBook {
   handleReset: () => void;
@@ -37,122 +42,34 @@ const beforeUpload = (file: RcFile) => {
   }
   return isJpgOrPng && isLt2M;
 };
-export function SelfOneBook(props: ISelfSetBook): JSX.Element {
+export default function SelfOneBook(props: ISelfSetBook): JSX.Element {
   const {handleReset, setListBook, setKeyPage} = props;
   const router = useRouter();
-  const [sellOrTrade, setSellOrderTrade] = useState<string>(""); // trade - sell - " "
-  const [value, setValue] = useState(1);
+  // const [sellOrTrade, setSellOrderTrade] = useState<string>("");
+  // const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
-  const dataList = [
-    {
-      label: "Tiểu thuyết",
-      value: "1",
-    },
-    {
-      label: "Khoa học công nghệ",
-      value: "2",
-    },
-    {
-      label: "Kinh tế",
-      value: "a",
-    },
-    {
-      label: "Văn học nghệ thuật",
-      value: "3",
-    },
-    {
-      label: "Lịch sử",
-      value: "4",
-    },
-    {
-      label: "Truyện ",
-      value: "5",
-    },
-    {
-      label: "Tâm linh",
-      value: "6",
-    },
-    {
-      label: "Du Lịch",
-      value: "7",
-    },
-    {
-      label: "Tâm Lý",
-      value: "8",
-    },
-    {
-      label: "Giáo dục",
-      value: "9",
-    },
-    {
-      label: "Pháp Luật ",
-      value: "10",
-    },
-    {
-      label: "Âm Nhạc",
-      value: "11",
-    },
-    {
-      label: "Kiểm tra",
-      value: "12",
-    },
-    {
-      label: "Adult",
-      value: "13",
-    },
-    {
-      label: "Y tế, sức khỏe, thể dục",
-      value: "14",
-    },
-    {
-      label: "Khoa Học Viễn tưỡng",
-      value: "15",
-    },
-  ];
 
   const handleCancel = (): void => {
-    setSellOrderTrade("");
+    // setSellOrderTrade("");
+    handleReset();
   };
-  const handleSubmit = (): void => {
+  const handleSubmit = (data: any): void => {
     setListBook((prev: any) => [
       ...prev,
       {
-        uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
-        title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
-        author: "Instant Research Institude",
-        price: "105.900 ₫",
-        status: "Bán",
-        category: "Tiểu thuyết",
-      },
+        ...data,
+        key: uuidv4(),
+        bookImages:[imageUrl],
+        publicationDate: moment(data.publicationDate).format("YYYY-MM-DD"),
+      }
     ]);
-    // listBook.push({
-    //   uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
-    //   title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
-    //   author: "Instant Research Institude",
-    //   price: "105.900 ₫",
-    //   status: "Bán",
-    //   category: "Tiểu thuyết",
-    // });
     setKeyPage("view");
-    // router.push("/manager_permission");
-    console.log("handel submit");
   };
 
-  const handleChangeUploadImage: UploadProps["onChange"] = (
-    info: UploadChangeParam<UploadFile>
-  ) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj as RcFile, (url) => {
-        setLoading(false);
-        setImageUrl(url);
-      });
-    }
+  const handleChangeUploadImage = async (file: any) => {
+    const link = await upLoadImage(file.file);
+    setImageUrl(link);
   };
 
   const uploadButton = (
@@ -163,7 +80,7 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
   );
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+    // setValue(e.target.value);
   };
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -181,75 +98,118 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
           }}
           type="primary"
         >
-          Chọn lại
+          Quay lại
         </Button>
       </div>
-      {/* <div className="item-formik"> */}
-      {/*  <div className="title-text"> */}
-      {/*    <span>Danh mục sách</span> */}
-      {/*    <span className="require">*</span> */}
-      {/*  </div> */}
-      {/*  <div className="action-item"> */}
-      {/*    <Select */}
-      {/*      defaultValue="Tiểu thuyết" */}
-      {/*      style={{width: 120}} */}
-      {/*      onChange={handleChange} */}
-      {/*      options={dataList} */}
-      {/*    /> */}
-      {/*  </div> */}
-      {/* </div> */}
-      {/* <div className="item-formik"> */}
-      {/*  <div className="title-text"> */}
-      {/*    <span>Thể loại sách</span> */}
-      {/*    <span className="require">*</span> */}
-      {/*  </div> */}
-      {/*  <div className="action-item"> */}
-      {/*    <Input placeholder="Nhập thể loại sách" /> */}
-      {/*  </div> */}
-      {/* </div> */}
-      <div className="item-formik">
-        <div className="title-text">
-          <span>ISBN</span>
-        </div>
-        <div className="action-item">
-          <Input placeholder="Nhập mã ISBN" />
-        </div>
-      </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Tên sách</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
+      <Form
+        name="basic"
+        labelAlign="left"
+        labelCol={{span: 7}}
+        wrapperCol={{span: 17}}
+        initialValues={{}}
+        onFinish={(val) => {
+          // console.log(val)
+          handleSubmit(val);
+        }}
+        // onValuesChange={(val) => setData({...data, ...val})}
+        // onFinishFailed={() => {}}
+        autoComplete="off"
+        colon={false}
+        id="form-book"
+      >
+        <Form.Item
+          label="ISBN"
+          required
+          name="isbn"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập ISBN" />
+        </Form.Item>
+        <Form.Item
+          label="Tên sách"
+          required
+          name="name"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
           <Input placeholder="Nhập tên sách" />
-        </div>
-      </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Tình trạng sách</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
-          <Radio.Group name="radiogroup" defaultValue={1}>
-            <Radio value={1}>Đã sử dụng</Radio>
-            <Radio value={2}>Còn mới</Radio>
+        </Form.Item>
+        <Form.Item
+          label="Loại bìa"
+          required
+          name="coverType"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập loại bìa" />
+        </Form.Item>
+        <Form.Item
+          label="Tác giả"
+          required
+          name="author"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập tác giả" />
+        </Form.Item>
+        <Form.Item
+          label="Ngôn ngữ"
+          required
+          name="language"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập ngôn ngữ" />
+        </Form.Item>
+        <Form.Item
+          label="Nhà xuất bản"
+          required
+          name="publicCompany"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập nhà xuất bản" />
+        </Form.Item>
+        <Form.Item
+          label="Ngày xuất bản"
+          required
+          name="publicationDate"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <DatePicker
+            placeholder="Chọn ngày xuất bản"
+            style={{width: "100%"}}
+            format={["DD-MM-YYYY"]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Mô tả"
+          required
+          name="description"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
+          <Input placeholder="Nhập mô tả" />
+        </Form.Item>
+        <Form.Item
+          label="Tình trạng sách"
+          required
+          name="statusQuo"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+          initialValue={"Còn mới"}
+        >
+          <Radio.Group name="statusQuo">
+            <Radio value={"Còn mới"}>Còn mới</Radio>
+            <Radio value={"Đã qua sử dụng"}>Đã qua sử dụng</Radio>
           </Radio.Group>
-        </div>
-      </div>
-      <div className="item-formik">
-        <div className="title-text">
-          <span>Tải ảnh lên</span>
-          <span className="require">*</span>
-        </div>
-        <div className="action-item">
+        </Form.Item>
+        <Form.Item
+          label="Tình trạng sách"
+          required
+          name="bookImages"
+          rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+        >
           <Upload
-            name="avatar"
+            name="url"
             listType="picture-card"
             className="avatar-uploader"
             showUploadList={false}
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            beforeUpload={beforeUpload}
-            onChange={handleChangeUploadImage}
+            beforeUpload={() => false}
+            onChange={(file) => handleChangeUploadImage(file)}
           >
             {imageUrl ? (
               <img src={imageUrl} alt="avatar" style={{width: "100%"}} />
@@ -257,36 +217,17 @@ export function SelfOneBook(props: ISelfSetBook): JSX.Element {
               uploadButton
             )}
           </Upload>
-        </div>
-      </div>
-
-      {/* <div className="item-formik"> */}
-      {/*  <div className="title-text"> */}
-      {/*    <span>Gía gốc</span> */}
-      {/*    <span className="require">*</span> */}
-      {/*  </div> */}
-      {/*  <div className="action-item"> */}
-      {/*    <Input placeholder="Nhập giá gốc" /> */}
-      {/*  </div> */}
-      {/* </div> */}
-      {/* <div className="item-formik"> */}
-      {/*  <div className="title-text"> */}
-      {/*    <span>Gía bán</span> */}
-      {/*    <span className="require">*</span> */}
-      {/*  </div> */}
-      {/*  <div className="action-item"> */}
-      {/*    <Input placeholder="Nhập giá" /> */}
-      {/*  </div> */}
-      {/* </div> */}
-
+        </Form.Item>
+      </Form>
       <div style={{display: "flex", justifyContent: "flex-end"}}>
         <Button onClick={handleCancel} style={{marginRight: "5px"}}>
           Hủy
         </Button>
         <Button
-          onClick={handleSubmit}
           style={{marginRight: "5px"}}
           type="primary"
+          htmlType="submit"
+          form="form-book"
         >
           Save
         </Button>

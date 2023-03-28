@@ -17,8 +17,8 @@ import {LoadingOutlined, PlusOutlined} from "@ant-design/icons";
 import type {UploadChangeParam} from "antd/es/upload";
 import type {RcFile, UploadFile, UploadProps} from "antd/es/upload/interface";
 import {useRouter} from "next/router";
-import {PostToSelf} from "@app/module/self_book/Components/PostToSelf";
-import {PostToTrade} from "@app/module/self_book/Components/PostToTrade";
+import PostToSelf from "@app/module/self_book/Components/PostToSelf";
+import PostToTrade from "@app/module/self_book/Components/PostToTrade";
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   const reader = new FileReader();
@@ -39,7 +39,7 @@ const beforeUpload = (file: RcFile) => {
 };
 export function SelfBook(): JSX.Element {
   const onChangeTab = (key: string) => {
-    console.log(key);
+    // console.log(key);
   };
 
   const items: TabsProps["items"] = [

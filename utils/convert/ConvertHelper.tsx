@@ -1,5 +1,5 @@
 import moment, {Moment} from "moment";
-
+import _ from "lodash";
 interface ISelectOption {
   label: string;
   value: string | number;
@@ -59,4 +59,14 @@ function convertTimestampToDate(timestamp?: number, format?: string): string {
   return moment.unix(timestamp).format(format || "DD.MM.YYYY");
 }
 
-export {renameKeys, convertTime, convertTimestampToDate, convertSelect};
+//format money
+function getMoneyFormat(number: number, n?: any, x?: any) {
+  if (!_.isNumber(number)) {
+    number = parseInt(number, 10);
+  }
+  const re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+  // eslint-disable-next-line no-bitwise
+  return number.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+}
+
+export {renameKeys, convertTime, convertTimestampToDate, convertSelect, getMoneyFormat};

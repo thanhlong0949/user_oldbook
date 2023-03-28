@@ -16,6 +16,7 @@ import LanguageSlice from "./slices/LanguageSlice";
 import {combineReducers} from "redux";
 import {configureStore} from "@reduxjs/toolkit";
 import RememberAccountSlice from "./slices/RememberAccountSlice";
+import categorySlice from "./slices/categorySlice";
 // import sessionStorage from "redux-persist/lib/storage/session";
 
 const createNoopStorage = (): {
@@ -58,6 +59,7 @@ const rootReducers = combineReducers({
   menu: MenuReducer,
   language: LanguageSlice,
   remember: RememberAccountSlice,
+  category: categorySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

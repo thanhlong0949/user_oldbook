@@ -8,9 +8,15 @@ export interface ILoginBody {
 export interface ILoginResponse {
   successCode?: string;
   data: {
-    id?: number;
-    name?: number;
-    accessToken?: string;
+    id: number;
+    name: string;
+    email: string;
+    phoneNumber: string;
+    gender: string;
+    imageUrl: string;
+    dob: string;
+    password: string;
+    accesstoken?: string;
   };
 }
 
@@ -25,14 +31,14 @@ export interface IParamsGetUser {
 }
 
 export interface IGetUserResponse {
-  response?: {
-    data?: {
-      id?: number;
-      firstname?: string;
-      email?: string;
-      url_image?: string;
-    };
-  };
+  id: number;
+  name?: string;
+  email?: string;
+  phoneNumber?: string | null;
+  gender?: string;
+  imageUrl?: string;
+  dob?: string;
+  password?: string;
 }
 
 export interface IRegisterBody {
@@ -43,9 +49,10 @@ export interface IRegisterBody {
 }
 
 const path = {
-  getUser: "/auth/get-user",
+  getUser: "/auth/get-user-info",
   login: "/auth/login",
   register: "/auth/register-user",
+  updateUser: "/auth/update-user-infor"
 };
 
 function register(body: IRegisterBody): Promise<never> {
@@ -60,12 +67,16 @@ function login(body: ILoginBody): Promise<ILoginResponse> {
 }
 
 function getUser(): Promise<IGetUserResponse> {
-  return fetcher({url: path.getUser, method: "get"});
+  return fetcher({url: `${path.getUser}/${store.getState()?.user?.id}`, method: "get"});
+}
+
+function updateUser(data: any){
+  return fetcher({url: path.updateUser, method: "put", data: data});
 }
 
 function isLogin(): boolean {
   const {user} = store.getState();
-  return !!user?.accessToken;
+  return !!user?.accesstoken;
 }
 
 export default {
@@ -73,4 +84,5 @@ export default {
   isLogin,
   getUser,
   register,
+  updateUser,
 };
