@@ -1,284 +1,164 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./index.scss";
-import {InputGlobal} from "@app/components/InputGlobal";
-import ErrorMessageGlobal from "@app/components/ErrorMessageGlobal";
-import {ButtonGlobal} from "@app/components/ButtonGlobal";
-import {Formik} from "formik";
-import {Radio, RadioChangeEvent, Upload, InputNumber} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
+import {
+  Radio,
+  RadioChangeEvent,
+  Upload,
+  Image,
+  Form,
+  Input,
+  DatePicker,
+  Button,
+} from "antd";
+import {PlusOutlined, LoadingOutlined} from "@ant-design/icons";
+import ApiUser from "@app/api/ApiUser";
+import {upLoadImage} from "@app/utils/firebase/uploadImage";
+import moment from "moment";
+import store from "@app/redux/store";
 
 export function UserInfor(): JSX.Element {
-  const [isChangeInfor, setIsChangeInfor] = useState<boolean>(false);
   const [value, setValue] = useState(1);
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [loading, setLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [data, setData] = useState<any>();
 
   const onChangeRadio = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
-  const handleChangeInfor = (): void => {
-    setIsChangeInfor(!isChangeInfor);
-  };
-  const handleCancel = (): void => {
-    setIsChangeInfor(!isChangeInfor);
-  };
-  const handleSave = (): void => {
-    setIsChangeInfor(!isChangeInfor);
-  };
-  const listItem = [
-    {
-      title: "Avatar",
-      placeholder: "Ảnh đại diện",
-      type: "avatar",
-      require,
-    },
-    {
-      title: "Họ",
-      placeholder: "Nhập họ",
-      type: "input",
-      require,
-    },
-    {
-      title: "Tên",
-      placeholder: "Nhập tên",
-      type: "input",
-      require,
-    },
-    {
-      title: "Số điện thoại",
-      placeholder: "Nhập số điện thoại",
-      type: "input",
-    },
-    {
-      title: "Email",
-      placeholder: "Nhập Email",
-      type: "input",
-      require,
-    },
-    {
-      title: "Giới tính",
-      type: "radio",
-      onChangeRadio: onChangeRadio,
-      radioList: [
-        {
-          value: 1,
-          label: "Nam",
-        },
-        {value: 0, label: "Nữ"},
-      ],
-      require,
-    },
-    {
-      title: "Birthday",
-      placeholder: "DD/MM/YYYY",
-      type: "input",
-      require,
-    },
-    {
-      title: "Rate",
-      placeholder: "Rate",
-      type: "number",
-    },
-  ];
-
-  const initialValues = {
-    username: "",
-    password: "",
-    remember: false,
-    pass_jwt: "",
+  const handleSubmit = (dataNew: any) => {
+      const putData = {
+        ...dataNew,
+        id: store.getState()?.user?.id,
+        dob: moment(dataNew.dob).format("YYYY-MM-DD"),
+        imageUrl: imageUrl,
+        password: store.getState()?.user?.password,
+      }
+      ApiUser.updateUser(putData).then((res: any) => {
+        setData({
+          ...res,
+          dob: moment(res.dob),
+        });
+        setImageUrl(res?.imageUrl);
+      })
   };
 
+  const handleChangeUploadImage = async (file: any) => {
+    const link = await upLoadImage(file.file);
+    setImageUrl(link);
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{marginTop: 8}}>Tải ảnh lên</div>
+    </div>
+  );
+
+  useEffect(() => {
+    ApiUser.getUser().then((res) => {
+      setData({
+        ...res,
+        dob: moment(res.dob),
+      });
+      setImageUrl(res?.imageUrl);
+    });
+  }, []);
   return (
     <div className="user-profile-tab-container">
       <h3>THÔNG TIN TÀI KHOẢN</h3>
-      <div style={{display: "flex"}}>
-        <Formik
-          initialValues={initialValues}
-          onSubmit={handleSave}
-          validateOnChange
-          validateOnBlur
-          // validationSchema={LoginValidation}
-        >
-          {({handleSubmit}): JSX.Element => {
-            return (
-              <div
-                className="formik-user-profile-container"
-                style={{width: "100%", padding: "0 24px"}}
+      {data && (
+        <div style={{width: "60%", margin: "12px auto"}}>
+          <Form
+            name="basic"
+            labelAlign="left"
+            labelCol={{span: 6}}
+            wrapperCol={{span: 18}}
+            onFinish={(data) => {
+              handleSubmit(data);
+            }}
+            onValuesChange={() => {
+              setIsEdit(true);
+            }}
+            initialValues={data}
+            autoComplete="off"
+            colon={false}
+            id="form-profile"
+          >
+            <Form.Item
+              label="Avatar"
+              name="imageUrl"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+            >
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                showUploadList={false}
+                beforeUpload={() => false}
+                onChange={(file) => handleChangeUploadImage(file)}
               >
-                <div className="user-profile-container">
-                  {listItem.map((item, index) => (
-                    <div key={index}>
-                      {item.type === "input" && (
-                        <div className="form-item">
-                          <div className="title">
-                            <span>{item.title}:</span>
-                            {item.require && (
-                              <span
-                                style={{
-                                  color: "red",
-                                  marginLeft: 3,
-                                  fontSize: 15,
-                                }}
-                              >
-                                *
-                              </span>
-                            )}
-                          </div>
-                          <div className="item-detail">
-                            <InputGlobal
-                              name="username"
-                              placeholder={item.placeholder}
-                              // prefix={<UserOutlined />}
-                              className="input_login"
-                              onPressEnter={(): void => handleSubmit()}
-                            />
-                          </div>
-                          <ErrorMessageGlobal name="username" />
-                        </div>
-                      )}
-                      {item.type === "radio" && (
-                        <div className="form-item">
-                          <div className="title">
-                            <span>{item.title}:</span>
-                            {item.require && (
-                              <span
-                                style={{
-                                  color: "red",
-                                  marginLeft: 3,
-                                  fontSize: 15,
-                                }}
-                              >
-                                *
-                              </span>
-                            )}
-                          </div>
-                          <div className="item-detail">
-                            <Radio.Group
-                              onChange={item.onChangeRadio}
-                              value={value}
-                            >
-                              {item.radioList &&
-                                item.radioList.map((itemRadio, index) => (
-                                  <Radio key={index} value={itemRadio.value}>
-                                    {itemRadio.label}
-                                  </Radio>
-                                ))}
-                            </Radio.Group>
-                          </div>
-                          <ErrorMessageGlobal name="username" />
-                        </div>
-                      )}
-                      {item.type === "avatar" && (
-                        <div className="form-item">
-                          <div className="title">
-                            <span>{item.title}:</span>
-                            {item.require && (
-                              <span
-                                style={{
-                                  color: "red",
-                                  marginLeft: 3,
-                                  fontSize: 15,
-                                }}
-                              >
-                                *
-                              </span>
-                            )}
-                          </div>
-                          <div className="item-detail">
-                            <Upload
-                              name="avatar"
-                              listType="picture-card"
-                              className="avatar-uploader"
-                              showUploadList={true}
-                              maxCount={1}
-                              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                              // beforeUpload={beforeUpload}
-                              // onChange={handleChange}
-                            >
-                              {/* {imageUrl ? (
-                                <img
-                                  src={imageUrl}
-                                  alt="avatar"
-                                  style={{width: "100%"}}
-                                />
-                              ) : (
-                                uploadButton
-                              )} */}
-                              <PlusOutlined />
-                            </Upload>
-                          </div>
-                          <ErrorMessageGlobal name="username" />
-                        </div>
-                      )}
-                      {item.type === "number" && (
-                        <div className="form-item">
-                          <div className="title">
-                            <span>{item.title}:</span>
-                            {item.require && (
-                              <span
-                                style={{
-                                  color: "red",
-                                  marginLeft: 3,
-                                  fontSize: 15,
-                                }}
-                              >
-                                *
-                              </span>
-                            )}
-                          </div>
-                          <div className="item-detail">
-                            <InputNumber
-                              min={1}
-                              max={100000}
-                              defaultValue={1}
-                            />
-                          </div>
-                          <ErrorMessageGlobal name="username" />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-
-                  <div className="group-button">
-                    {!isChangeInfor ? (
-                      <ButtonGlobal
-                        onClick={handleChangeInfor}
-                        className="btn-fix"
-                        title="Sửa"
-                        type="primary-filled"
-                        // loading={login.isLoading}
-                      />
-                    ) : (
-                      <>
-                        <ButtonGlobal
-                          onClick={handleCancel}
-                          className="btn-cancel"
-                          title="Huỷ"
-                          // loading={login.isLoading}
-                        />
-                        <ButtonGlobal
-                          onClick={handleSubmit}
-                          className="btn-save"
-                          title="OK"
-                          type="primary-filled"
-                          // loading={login.isLoading}
-                        />
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          }}
-        </Formik>
-        {/* <div style={{width: "20%", paddingLeft: 25}}>
-          <Image
-            preview={false}
-            width={200}
-            src="https://st3.depositphotos.com/1767687/16607/v/450/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
-          />
-          <p style={{textAlign: "center", fontSize: 20}}>Rate: 53</p>
-        </div> */}
-      </div>
+                {imageUrl ? (
+                  <img src={imageUrl} alt="avatar" style={{width: "100%"}} />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </Form.Item>
+            <Form.Item
+              label="Họ và tên"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="name"
+            >
+              <Input placeholder="Nhập họ và tên" />
+            </Form.Item>
+            <Form.Item label="Số điện thoại" name="phoneNumber">
+              <Input placeholder="Nhập số điện thoại" />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="email"
+            >
+              <Input placeholder="Nhập email" />
+            </Form.Item>
+            <Form.Item
+              label="Giới tính"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="gender"
+            >
+              <Radio.Group name="gender">
+                <Radio value={"nam"}>Nam</Radio>
+                <Radio value={"nữ"}>Nữ</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
+              label="Ngày sinh"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="dob"
+              initialValue={data?.dob}
+            >
+              <DatePicker
+                placeholder="Chọn ngày sinh"
+                style={{width: "100%"}}
+                format={["DD-MM-YYYY"]}
+              />
+            </Form.Item>
+          </Form>
+          <div className="btn" style={{textAlign: "center"}}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={!isEdit}
+              style={{marginTop: "24px", textAlign: "center"}}
+              form="form-profile"
+            >
+              Sửa
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -31,7 +31,8 @@
         }
         .image {
           margin-top: 20px;
-          height: 380px;
+          height: 460px;
+          overflow-y: scroll;
           background-color: #f3f3f3;
           border-radius: 10px;
           padding: 15px;
@@ -43,10 +44,12 @@
           }
 
           .group-image-preview {
+            width: 100%;
             display: flex;
             justify-content: center;
             margin-top: 8px;
             gap: 8px;
+            flex-wrap: wrap;
 
             .item-book {
               margin-right: 5px;

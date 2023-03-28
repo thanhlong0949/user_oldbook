@@ -1,30 +1,30 @@
-import React, {useState} from "react";
-import {SelfOneBook} from "@app/module/self_book/Components/SelfOneBook";
-import {Button, Image, Input, Select, Upload} from "antd";
+import React, {useEffect, useState} from "react";
+import SelfOneBook from "@app/module/self_book/Components/SelfOneBook";
+import {Button, Form, Image, Input, notification, Select, Upload} from "antd";
 import {
-  BookOutlined,
-  DollarCircleOutlined,
+  BarcodeOutlined,
   LoadingOutlined,
   PlusOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import "./indexPostToSelf.scss";
+import ApiBook from "@app/api/ApiBook";
+import {upLoadImage} from "@app/utils/firebase/uploadImage";
+import ApiPost from "@app/api/ApiPost";
+import {useSelector} from "react-redux";
+import {useRouter} from "next/router";
 
-export function PostToSelf(): JSX.Element {
-  const [value, setValue] = useState<number | undefined>(undefined);
+export default function PostToSelf(): JSX.Element {
+  const router = useRouter();
+  const user = useSelector((state: any) => state.user);
   const [keyPage, setKeyPage] = useState("view"); // view || post
   const [imageUrl, setImageUrl] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [listBook, setListBook] = useState([
-    {
-      uri: "https://salt.tikicdn.com/cache/750x750/ts/product/4f/87/d7/75d5f3884d462d1b23b7376c5300896f.png.webp",
-      title: "Ăn Sạch Sống Xanh, Tâm Lành Trí Khoẻ",
-      author: "Instant Research Institude",
-      price: "105.900 ₫",
-      status: "Bán",
-      category: "Tiểu thuyết",
-    },
-  ]);
-  console.log("value", value);
+  const [category, setCategory] = useState<any>([]);
+  const [idCategorySelect, setIdCategorySelect] = useState<any>();
+  const [subcategory, setSubcategory] = useState<any>();
+  const [listBook, setListBook] = useState([]);
+  const [data, setData] = useState<any>();
 
   const handleReset = (): void => {
     setKeyPage("view");
@@ -34,7 +34,15 @@ export function PostToSelf(): JSX.Element {
     setKeyPage("post");
   };
 
-  const handleChangeUploadImage = (): void => {};
+  const handleDeleteBook = (book: any): void => {
+    const bookNew = listBook.filter((el: any) => el.key !== book.key);
+    setListBook(bookNew);
+  };
+
+  const handleChangeUploadImage = async (file: any) => {
+    const link = await upLoadImage(file.file);
+    setImageUrl(link);
+  };
 
   const uploadButton = (
     <div>
@@ -43,6 +51,36 @@ export function PostToSelf(): JSX.Element {
     </div>
   );
 
+  const handleSubmit = (data: any) => {
+    const postData = {
+      ...data,
+      form: "bán",
+      imageUrl: imageUrl,
+      bookList: listBook,
+      userId: user?.id,
+    };
+    ApiPost.creatPost(postData).then((res) => {
+      if (res) {
+        notification.success({
+          message: "Tạo bài post thành công!",
+        });
+        router.push("/");
+      }
+    });
+  };
+  useEffect(() => {
+    ApiBook.getCategoryDetail().then((res) => {
+      setCategory(res);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (idCategorySelect) {
+      ApiBook.getSubcategoryDeatail(idCategorySelect).then((res) => {
+        setSubcategory(res);
+      });
+    }
+  }, [idCategorySelect]);
   return (
     <div className="post-to-self-container">
       {keyPage === "view" ? (
@@ -59,7 +97,10 @@ export function PostToSelf(): JSX.Element {
               style={{
                 marginRight: "5px",
               }}
+              htmlType="submit"
+              form="form-self"
               type="primary"
+              disabled={listBook.length === 0}
             >
               Đăng bán
             </Button>
@@ -73,52 +114,73 @@ export function PostToSelf(): JSX.Element {
               Thêm sách
             </Button>
           </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Danh mục sách</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
+          <Form
+            name="basic"
+            labelAlign="left"
+            labelCol={{span: 7}}
+            wrapperCol={{span: 17}}
+            onFinish={(data) => {
+              handleSubmit(data);
+            }}
+            initialValues={data}
+            onValuesChange={(value) => {
+              setData({
+                ...data,
+                ...value,
+              });
+            }}
+            autoComplete="off"
+            colon={false}
+            id="form-self"
+          >
+            <Form.Item
+              label="Danh mục sách"
+              name="categoryId"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+            >
               <Select
-                defaultValue="Tiểu thuyết"
-                style={{width: 120}}
-                // onChange={handleChange}
-                // options={dataList}
+                allowClear
+                fieldNames={{label: "name", value: "id"}}
+                onChange={(val) => {
+                  setIdCategorySelect(val);
+                }}
+                options={category}
+                placeholder="Chọn danh mục sách"
               />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Thể loại sách</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
-              <Input placeholder="Nhập thể loại sách" />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Tiêu đề bài đăng</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
-              <Input placeholder="Nhập thể loại sách" />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Ảnh bài đăng</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
+            </Form.Item>
+            <Form.Item
+              label="Thể loại sách"
+              required
+              name="subCategoryId"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+            >
+              <Select
+                allowClear
+                fieldNames={{label: "name", value: "id"}}
+                options={subcategory}
+                placeholder="Chọn thể loại sách"
+              />
+            </Form.Item>
+            <Form.Item
+              label="Tiêu đề bài đăng"
+              required
+              name="title"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+            >
+              <Input placeholder="Nhập tiêu đề" />
+            </Form.Item>
+            <Form.Item
+              label="Ảnh bài đăng"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="imageUrl"
+            >
               <Upload
                 name="avatar"
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                // beforeUpload={beforeUpload}
-                onChange={handleChangeUploadImage}
+                beforeUpload={() => false}
+                onChange={(file) => handleChangeUploadImage(file)}
               >
                 {imageUrl ? (
                   <img src={imageUrl} alt="avatar" style={{width: "100%"}} />
@@ -126,71 +188,58 @@ export function PostToSelf(): JSX.Element {
                   uploadButton
                 )}
               </Upload>
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Thể loại sách</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
-              <Input placeholder="Nhập thể loại sách" />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Gía gốc</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
+            </Form.Item>
+            <Form.Item
+              label="Giá gốc"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="initPrice"
+            >
               <Input placeholder="Nhập giá gốc" />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Gía bán</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
-              <Input placeholder="Nhập giá" />
-            </div>
-          </div>
-          <div className="item-formik">
-            <div className="title-text">
-              <span>Thêm địa chỉ</span>
-              <span className="require">*</span>
-            </div>
-            <div className="action-item">
+            </Form.Item>
+            <Form.Item
+              label="Giá bán"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="price"
+            >
+              <Input placeholder="Nhập giá bán" />
+            </Form.Item>
+            <Form.Item
+              label="Địa chỉ"
+              rules={[{required: true, message: "Vui lòng nhập trường này"}]}
+              name="location"
+            >
               <Input placeholder="Số nhà - tên đường - phường/xã - quận/huyện - tỉnh/TP" />
-            </div>
-          </div>
-
-          {value === undefined && (
+            </Form.Item>
+          </Form>
+          {listBook.length > 0 && (
             <div className="home-list-book">
-              {listBook.map((item, index) => (
+              {listBook.map((item: any, index) => (
                 <div className="item-book" key={index}>
-                  {/* <div className="icon-delete">
-                    <CloseCircleOutlined />
-                  </div> */}
+                  <div className="icon-delete">
+                    <CloseCircleOutlined
+                      onClick={() => handleDeleteBook(item)}
+                    />
+                  </div>
                   <Image
                     preview={false}
                     width={160}
                     height={160}
-                    src={item.uri}
+                    src={item?.bookImages[0]}
                   />
-                  <div className="text-title">{item.title}</div>
+                  <div className="text-title">{item?.name}</div>
                   <div className="author">
-                    Tác giả:{item.author} - (còn mới)
+                    Tác giả:{item?.author} - ({item?.statusQuo})
                   </div>
                   <div className="row-end">
                     <div>
                       <div style={{display: "flex", alignItems: "center"}}>
-                        <DollarCircleOutlined />
-                        <div className="text-align-center">{item.price}</div>
+                        <BarcodeOutlined />
+                        <div className="text-align-center">{item?.isbn}</div>
                       </div>
                       <div style={{display: "flex", alignItems: "center"}}>
-                        <BookOutlined />
-                        <div className="text-align-center">{item.category}</div>
+                        <div className="text-align-center">
+                          {item?.publicationDate}
+                        </div>
                       </div>
                     </div>
                   </div>

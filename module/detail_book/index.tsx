@@ -1,12 +1,10 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./index.scss";
 import Navbar from "@app/components/Layout/Navbar/Navbar";
-import {Button, Image, Select} from "antd";
+import {Button, Image, Input, Select} from "antd";
 import {
   CheckCircleFilled,
   DollarCircleOutlined,
-  EyeOutlined,
-  GlobalOutlined,
   HeartOutlined,
   MoneyCollectOutlined,
   ShareAltOutlined,
@@ -14,91 +12,29 @@ import {
 } from "@ant-design/icons";
 import {useRouter} from "next/router";
 import {BreakCrumGlobal} from "@app/components/BreakCrumGlobal";
+import ApiBook from "@app/api/ApiBook";
+import moment from "moment";
+import { getMoneyFormat } from "@app/utils/convert/ConvertHelper";
 
 export function DetailBook(): JSX.Element {
   const router = useRouter();
+  const [data, setData] = useState<any>([]);
+  // const [imagePreview, setImagePreview] = useState<any>([]);
+  const [dataCurrent, setDataCurent] = useState<any>();
+  const [imageCurent, setImageCurent] = useState<any>();
   const keyPage = router.query.key;
-  console.log("keyPage", keyPage);
-  const imagePreview = [
-    {
-      url: "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/280x280/ts/product/05/3f/91/9e0157711ad88490a2497018aaf79bad.png.webp",
-    },
-    {
-      url: "https://salt.tikicdn.com/cache/280x280/ts/product/15/28/5d/d086661715806b0cd6053f2a40c5e1a4.jpg.webp",
-    },
-  ];
-  const [imageCurent, setImageCurent] = useState(
-    "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703"
-  );
-  const dataList = [
-    {
-      label: "Tiểu thuyết",
-      value: "1",
-    },
-    {
-      label: "Khoa học công nghệ",
-      value: "2",
-    },
-    {
-      label: "Kinh tế",
-      value: "a",
-    },
-    {
-      label: "Văn học nghệ thuật",
-      value: "3",
-    },
-    {
-      label: "Lịch sử",
-      value: "4",
-    },
-    {
-      label: "Truyện ",
-      value: "5",
-    },
-    {
-      label: "Tâm linh",
-      value: "6",
-    },
-    {
-      label: "Du Lịch",
-      value: "7",
-    },
-    {
-      label: "Tâm Lý",
-      value: "8",
-    },
-    {
-      label: "Giáo dục",
-      value: "9",
-    },
-    {
-      label: "Pháp Luật ",
-      value: "10",
-    },
-    {
-      label: "Âm Nhạc",
-      value: "11",
-    },
-    {
-      label: "Kiểm tra",
-      value: "12",
-    },
-    {
-      label: "Adult",
-      value: "13",
-    },
-    {
-      label: "Y tế, sức khỏe, thể dục",
-      value: "14",
-    },
-    {
-      label: "Khoa Học Viễn tưỡng",
-      value: "15",
-    },
-  ];
+  // console.log("keyPage", keyPage);
+  // const imagePreview = [
+  //   {
+  //     url: "https://bizweb.dktcdn.net/100/415/039/products/dac-nhan-tam-biamem2019-76k-bia1.jpg?v=1625125173703",
+  //   },
+  //   {
+  //     url: "https://salt.tikicdn.com/cache/280x280/ts/product/05/3f/91/9e0157711ad88490a2497018aaf79bad.png.webp",
+  //   },
+  //   {
+  //     url: "https://salt.tikicdn.com/cache/280x280/ts/product/15/28/5d/d086661715806b0cd6053f2a40c5e1a4.jpg.webp",
+  //   },
+  // ];
 
   const goToPayment = (value: string): void => {
     router.push({
@@ -107,36 +43,48 @@ export function DetailBook(): JSX.Element {
     });
   };
 
+  const handleGetBook = (book: any) => {
+    const tmp = data.find((el: any) => el.bookId === book.bookId);
+    setDataCurent(tmp);
+    setImageCurent(book.bookImages[0]?.url);
+  }
+
   const handleListImage = () => {
-    return imagePreview.map((el, index) => (
+    return data.map((el: any, index: number) => (
       <div
         className="item-book"
-        onClick={() => setImageCurent(el.url)}
+        onClick={() => handleGetBook(el)}
         key={index}
       >
-        <Image width={50} height={70} preview={false} src={el.url} />
+        <Image
+          width={50}
+          height={70}
+          preview={false}
+          src={el.bookImages[0]?.url}
+        />
       </div>
     ));
   };
+
+  useEffect(() => {
+    if (router.query.postId) {
+      ApiBook.getBookDetail(router.query.postId as string).then((res: any) => {
+        setData(res);
+        setDataCurent(res[0]);
+        setImageCurent(res[0].bookImages[0]?.url);
+      });
+    }
+  }, [router.query]);
+
   return (
     <div className="detail-book-container-new">
       <Navbar />
       <div className="self-book">
         <BreakCrumGlobal
           listBreakcrum={
-            keyPage === "Bán"
-              ? [
-                  "Trang chủ",
-                  "Danh mục sản phẩm",
-                  "Tiểu thuyết",
-                  "Tiểu thuyết trinh thám",
-                ]
-              : [
-                  "Trang chủ",
-                  "Danh mục sản phẩm",
-                  "Tiểu thuyết",
-                  "Tiểu thuyết trinh thám",
-                ]
+            keyPage === "bán"
+              ? ["Trang chủ", "Mua sách"]
+              : ["Trang chủ", "Trao đổi sách"]
           }
         />
         <div className="main">
@@ -161,14 +109,12 @@ export function DetailBook(): JSX.Element {
             </div>
           </div>
           <div className="detail-book">
-            <h2 style={{color: "#333"}}>
-              Youth Railway Recruitment Board Reasoning Chapterwise Solved
-              Papers
-            </h2>
-            {keyPage === "Bán" ? (
+            <h2 style={{color: "#333"}}>{dataCurrent?.name}</h2>
+            {keyPage === "bán" ? (
               <div className="price">
-                <DollarCircleOutlined />
-                <span style={{marginLeft: "5px"}}>275$</span>
+                <span style={{marginLeft: "5px"}}>
+                  {getMoneyFormat(dataCurrent?.price) ?? 0}VND
+                </span>
               </div>
             ) : (
               <div>
@@ -189,11 +135,11 @@ export function DetailBook(): JSX.Element {
               </div>
             )}
 
-            {keyPage === "Bán" ? (
+            {keyPage === "bán" ? (
               <div className="button-sale">
                 <Button
                   type="primary"
-                  onClick={goToPayment}
+                  onClick={() => goToPayment("Mua")}
                   icon={<MoneyCollectOutlined />}
                 >
                   Mua ngay
@@ -212,40 +158,34 @@ export function DetailBook(): JSX.Element {
 
             <div className="group-text">
               <div className="row-text">
-                <div className="title">Tên</div>
-                <div className="detail">Đắc Nhân Tâm</div>
+                <div className="title">Ngày xuất bản</div>
+                <div className="detail">
+                  {moment(dataCurrent?.publicationDate).format("DD/MM/YYYY")}
+                </div>
               </div>
               <div className="row-text">
-                <div className="title">Người đăng</div>
-                <div className="detail">NaN</div>
-              </div>
-              <div className="row-text">
-                <div className="title">Ngày đăng</div>
-                <div className="detail">10/02/2023</div>
-              </div>
-              <div className="row-text">
-                <div className="title">Thể loại sách</div>
-                <div className="detail">Bìa cứng</div>
+                <div className="title">Loại bìa</div>
+                <div className="detail">{dataCurrent?.coverType}</div>
               </div>
               <div className="row-text">
                 <div className="title">Tình trạng</div>
-                <div className="detail">Còn mới</div>
+                <div className="detail">{dataCurrent?.statusQuo}</div>
               </div>
               <div className="row-text">
                 <div className="title">Thể loại</div>
-                <div className="detail">Sách tự sự</div>
+                <div className="detail">{dataCurrent?.subcategoryName}</div>
               </div>
               <div className="row-text">
                 <div className="title">Tác giả</div>
-                <div className="detail">Dale Carnegie</div>
+                <div className="detail">{dataCurrent?.author}</div>
               </div>
               <div className="row-text">
                 <div className="title">Ngôn ngữ</div>
-                <div className="detail"> Tiếng Anh</div>
+                <div className="detail">{dataCurrent?.language}</div>
               </div>
-              {keyPage !== "Bán" && (
+              {keyPage !== "bán" && (
                 <div>
-                  <div className="row-text">
+                  {/* <div className="row-text">
                     <div className="title">Thể loại sách</div>
                     <div className="detail">
                       <Select
@@ -257,18 +197,11 @@ export function DetailBook(): JSX.Element {
                         options={dataList}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="row-text">
                     <div className="title">Tên sách</div>
                     <div className="detail">
-                      <Select
-                        mode="multiple"
-                        allowClear
-                        style={{width: "50%"}}
-                        placeholder="Please select"
-                        onChange={() => console.log("select category")}
-                        options={dataList}
-                      />
+                      <Input />
                     </div>
                   </div>
                 </div>
@@ -279,18 +212,9 @@ export function DetailBook(): JSX.Element {
         <div className="description">
           <div className="left">
             <h3>Mô tả</h3>
-            <p>Dehli univercity MIL HILDI</p>
-            <p className="detail">
-              When you call, don't forget to mention that you found this ad on
-              Clankart.
-            </p>
+            <p>{dataCurrent?.description}</p>
             <div className="row-info">
-              <span>Id: 2701675580987505</span>
-              <span>Ngày đăng: Sun, 05 Feb 2023</span>
-              <div style={{display: "flex", alignItems: "center"}}>
-                <EyeOutlined style={{fontSize: 18, marginRight: "2px"}} />
-                <span>20 lượt xem</span>
-              </div>
+              <span>{moment(dataCurrent?.createAt).format("DD-MM-YYYY")}</span>
             </div>
           </div>
           <div className="right">
@@ -300,21 +224,21 @@ export function DetailBook(): JSX.Element {
                 <UserOutlined style={{fontSize: 20}} />
               </div>
               <div className="detail-icon">
-                <h4>Anaya</h4>
+                <h4>{dataCurrent?.userName}</h4>
                 <CheckCircleFilled
                   style={{marginRight: 4, marginLeft: 4, color: "#26a541"}}
                 />
                 <h5>Xác thực</h5>
               </div>
             </div>
-            <div className="row1">
+            {/* <div className="row1">
               <div className="icon">
                 <GlobalOutlined style={{fontSize: 20}} />
               </div>
               <div className="detail-icon">
                 <h5>North West Delhi (110009), DELHI</h5>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -76,6 +76,15 @@
 
     .author {
       font-size: 14px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      >span{
+        padding-right: 4px;
+        font-weight: 500;
+        width: max-content;
+        display: inline-block;
+      }
     }
 
     .vote {

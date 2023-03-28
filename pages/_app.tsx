@@ -8,6 +8,7 @@ import "../styles/_app.scss";
 import "../utils/I18n";
 import {AppProps} from "next/app";
 import Config from "../config";
+import "../firebase/config.ts"
 import "react-quill/dist/quill.snow.css";
 
 const queryClient = new QueryClient({
