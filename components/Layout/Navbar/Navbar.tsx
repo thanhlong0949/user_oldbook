@@ -107,8 +107,8 @@ export default function Navbar(): JSX.Element {
           prefix={<SearchOutlined />}
           value={search || defaultSeach }
           onChange={(e) => {
-            if(e.target.value){
-              setSearch(e.target.value)
+            if(e.target.value.trim()){
+              setSearch(e.target.value.trim())
             }
             else{
               setDefaultSeach("");
