@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Avatar, Button, Image, Input, Dropdown, Space, Modal} from "antd";
 import {
   PhoneOutlined,
@@ -14,59 +14,58 @@ import {Icon} from "@app/components/Icon";
 import Config from "@app/config";
 // import store from "@app/redux/store";
 import {useSelector} from "react-redux";
-import { logout } from "@app/api/Fetcher";
+import {logout} from "@app/api/Fetcher";
 
 export default function Navbar(): JSX.Element {
   const router = useRouter();
   const [search, setSearch] = useState<string>();
-  const [defaultSeach, setDefaultSeach]= useState(router.query.search);
+  const [defaultSeach, setDefaultSeach] = useState(router.query.search);
   const user = useSelector((state: any) => state.user);
-  const avatar =
-    user?.imageUrl === "null"
-      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROHKlouvigPKl5alhVxMYIR06b5zfylHBLzA&usqp=CAU"
-      : user?.imageUrl;
+  const avatar = user?.imageUrl;
 
-      const items = [
-        {
-          key: "1",
-          label: <div className="" onClick={() => router.push("user_profile")}>Thông tin cá nhân</div>,
-          icon: <InfoCircleOutlined />,
-        },
-        {
-          key: "2",
-          label: (
-            <div
-              className=""
-              onClick={() => {
-                const showConfirm = () => {
-                  Modal.confirm({
-                    title: "Bạn chắc chắn muốn đăng xuất?",
-                    icon: <ExclamationCircleFilled />,
-                    onOk() {
-                      logout();
-                      window.location.reload();
-                    },
-                    onCancel() {
-                      // console.log('Cancel');
-                    },
-                  });
-                };
-                showConfirm();
-              }}
-            >
-              Đăng xuất
-            </div>
-          ),
-          icon: <LogoutOutlined />,
-          //   disabled: true,
-        },
-      ];
+  const items = [
+    {
+      key: "1",
+      label: (
+        <div className="" onClick={() => router.push("user_profile")}>
+          Thông tin cá nhân
+        </div>
+      ),
+      icon: <InfoCircleOutlined />,
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          className=""
+          onClick={() => {
+            const showConfirm = () => {
+              Modal.confirm({
+                title: "Bạn chắc chắn muốn đăng xuất?",
+                icon: <ExclamationCircleFilled />,
+                onOk() {
+                  logout();
+                  window.location.reload();
+                },
+                onCancel() {
+                  // console.log('Cancel');
+                },
+              });
+            };
+            showConfirm();
+          }}
+        >
+          Đăng xuất
+        </div>
+      ),
+      icon: <LogoutOutlined />,
+    },
+  ];
 
   const toPageSearch = (): void => {
-    if(!search){
+    if (!search) {
       // router.push(`/`);
-    }
-    else{
+    } else {
       router.push(`/?search=${search}`);
     }
   };
@@ -88,29 +87,23 @@ export default function Navbar(): JSX.Element {
 
   useEffect(() => {
     setDefaultSeach(router.query.search);
-  },[router.query])
+  }, [router.query]);
 
   return (
     <div className="navbar" style={{height: Config.HEIGHT_NAVBAR}}>
       <div onClick={goToHomePage} className="logo">
-        <Image
-          width={80}
-          height={40}
-          preview={false}
-          src={avatar}
-        />
+        <Image width={80} height={40} preview={false} src={"/logo_book.jpg"} />
       </div>
       <div className="search-navbar">
         <Input
           placeholder="Tìm Kiếm Sách ..."
           className="input-search"
           prefix={<SearchOutlined />}
-          value={search || defaultSeach }
+          value={search || defaultSeach}
           onChange={(e) => {
-            if(e.target.value.trim()){
-              setSearch(e.target.value.trim())
-            }
-            else{
+            if (e.target.value.trim()) {
+              setSearch(e.target.value.trim());
+            } else {
               setDefaultSeach("");
               setSearch("");
             }
